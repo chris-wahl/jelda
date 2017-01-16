@@ -1,0 +1,67 @@
+link.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+walkUP
+ rotate: false
+ xy: 0, 0
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: -1
+walkDOWN
+ rotate: false
+ xy: 0, 17
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: -1
+walkSIDE
+ rotate: false
+ xy: 0, 34
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: 0
+walkSIDE
+ rotate: false
+ xy: 17, 34
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: 1
+swingDOWN
+ rotate: false
+ xy: 17, 0
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: 0
+swingSIDE
+ rotate: false
+ xy: 34, 0
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: 0
+swingUP
+ rotate: false
+ xy: 51, 0
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: 0
+liftONE
+rotate: false
+ xy: 34, 17
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: 0
+liftTWO
+ rotate: false
+ xy: 51, 17
+ size: 16, 16
+ orig: 16, 16
+ offset: 0, 0
+ index: 0

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.Level;
+import net.nothingmuch.jelda.managers.WorldContactListener;
 import net.nothingmuch.jelda.screens.GameScreen;
 
 import static net.nothingmuch.jelda.utilities.Constants.WorldType;
@@ -31,18 +32,22 @@ public abstract class GameWorld {
 		this.worldType = worldType;
 		this.gameScreen = gameScreen;
 		this.world = new World( new Vector2( 0, 0 ), false );
-		this.link = new Link( this );
+		this.world.setContactListener( new WorldContactListener( this ) );
 		this.rayHandler = new RayHandler( world );
-		rayHandler.setAmbientLight( 100f / 255, 100f / 255, 100f / 255, 100f / 255 );
+		float lvl = 200f;
+		
+		rayHandler.setAmbientLight( lvl / 255f );
 		initGrid();
+		
+		this.link = new Link( this, levelGrid[ 0 ][ 0 ] );
 	}
 	
 	protected void initGrid(){
 		levelGrid = new Level[ worldType.N_X ][ worldType.N_Y ];
 		
-		for( int y = 0; y < worldType.N_Y; y++ ){
-			for( int x = 0; x < worldType.N_X; x++ ){
-				levelGrid[ x ][ y ] = new Level( world, x, y );
+		for( int levelGridY = 0; levelGridY < worldType.N_Y; levelGridY++ ){
+			for( int levelGridX = 0; levelGridX < worldType.N_X; levelGridX++ ){
+				levelGrid[ levelGridX ][ levelGridY ] = new Level( this, levelGridX, levelGridY );
 			}
 		}
 	}
@@ -50,8 +55,7 @@ public abstract class GameWorld {
 	public void destroy( Body body ){
 		toBeDestoryed.add( body );
 	}
-	
-	protected void destroyBodies(){
+	private void destroyBodies(){
 		for( Body b : toBeDestoryed ){
 			world.destroyBody( b );
 		}
@@ -61,12 +65,14 @@ public abstract class GameWorld {
 	public void update( float delta ){
 		world.step( 1 / 60f, 6, 2 );
 		doUpdate( delta );
+	}
+	public void postupdate(){
+		destroyBodies();
 		rayHandler.update();
 	}
 	
 	public void draw( SpriteBatch spriteBatch, float runTime ) {
 		doDraw( spriteBatch, runTime );
-		rayHandler.render();
 	}
 	
 	public abstract void doUpdate( float delta );
@@ -82,5 +88,8 @@ public abstract class GameWorld {
 	}
 	public RayHandler getRayHandler(){
 		return rayHandler;
+	}
+	public void scrollWheel( float scrolled ){
+		gameScreen.getCameraManager().setZoom( gameScreen.getCameraManager().getZoom() + scrolled );
 	}
 }

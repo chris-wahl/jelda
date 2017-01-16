@@ -47,6 +47,7 @@ public class GameStateManager {
 			setState( currentState );
 		}
 		states.peek().update( delta );
+		cameraManager.update( delta );
 	}
 	
 	public void render( float delta ){
@@ -55,6 +56,7 @@ public class GameStateManager {
 	}
 	
 	public void resize( int width, int height ){
+		cameraManager.resize( width, height );
 		states.peek().resize( width, height );
 	}
 	

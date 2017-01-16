@@ -2,6 +2,7 @@ package net.nothingmuch.jelda.utilities.b2d;
 
 import com.badlogic.gdx.physics.box2d.*;
 
+import static net.nothingmuch.jelda.utilities.Constants.BIT_SENSOR;
 import static net.nothingmuch.jelda.utilities.Constants.PPM;
 
 /**
@@ -9,14 +10,14 @@ import static net.nothingmuch.jelda.utilities.Constants.PPM;
  */
 public class BodyBuilder {
 	
-	public static Body createRect( World world, float centerX, float centerY, float width, float height, boolean isStatic, boolean fixedRotation ){
+	public static Body createRect( World world, float pixelCenterX, float pixelCenterY, float width, float height, boolean isStatic, boolean fixedRotation ){
 		Body body;
 		BodyDef bodyDef = new BodyDef();
 		PolygonShape shape = new PolygonShape();
 		
 		bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
 		bodyDef.fixedRotation = fixedRotation;
-		bodyDef.position.set( centerX / PPM, centerY / PPM );
+		bodyDef.position.set( pixelCenterX / PPM, pixelCenterY / PPM );
 		
 		shape.setAsBox( width / 2f / PPM, height / 2f / PPM );
 		
@@ -25,7 +26,7 @@ public class BodyBuilder {
 		return body;
 	}
 	
-	public static Body createRect( World world, float centerX, float centerY, float width, float height, boolean isStatic, boolean fixedRotation,
+	public static Body createRect( World world, float pixelCenterX, float pixelCenterY, float width, float height, boolean isStatic, boolean fixedRotation,
 	                               short cBits, short mBits, short gIndex ){
 		Body body;
 		BodyDef bodyDef = new BodyDef();
@@ -34,7 +35,7 @@ public class BodyBuilder {
 		
 		bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
 		bodyDef.fixedRotation = fixedRotation;
-		bodyDef.position.set( centerX / PPM, centerY / PPM );
+		bodyDef.position.set( pixelCenterX / PPM, pixelCenterY / PPM );
 		
 		shape.setAsBox( width / 2f / PPM, height / 2f / PPM );
 		
@@ -52,8 +53,8 @@ public class BodyBuilder {
 		return body;
 	}
 	
-	public static Body createSensorRect( World world, float centerX, float centerY, float width, float height,
-	                                     short cBits, short mBits, short gIndex ){
+	public static Body createSensorRect( World world, Object sensorData, float pixelCenterX, float pixelCenterY, float width, float height,
+										 short mBits, short gIndex ){
 		Body body;
 		BodyDef bodyDef = new BodyDef();
 		PolygonShape shape = new PolygonShape();
@@ -61,19 +62,19 @@ public class BodyBuilder {
 		
 		bodyDef.type = BodyDef.BodyType.StaticBody;
 		bodyDef.fixedRotation = true;
-		bodyDef.position.set( centerX / PPM, centerY / PPM );
+		bodyDef.position.set( pixelCenterX / PPM, pixelCenterY / PPM );
 		
 		shape.setAsBox( width / 2f / PPM, height / 2f / PPM );
 		
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1f;
-		fixtureDef.filter.categoryBits = cBits;
+		fixtureDef.filter.categoryBits = BIT_SENSOR;
 		fixtureDef.filter.maskBits = mBits;
 		fixtureDef.filter.groupIndex = gIndex;
 		fixtureDef.isSensor = true;
 		
 		body = world.createBody( bodyDef );
-		body.createFixture( fixtureDef );
+		body.createFixture( fixtureDef ).setUserData( sensorData );
 		
 		shape.dispose();
 		

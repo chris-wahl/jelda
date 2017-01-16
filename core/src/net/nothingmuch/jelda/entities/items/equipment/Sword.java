@@ -7,10 +7,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import net.nothingmuch.darkzelda.entities.characters.Link;
-import net.nothingmuch.darkzelda.managers.GameWorldManager;
+import net.nothingmuch.jelda.entities.characters.Link;
+import net.nothingmuch.jelda.managers.GameWorldManager;
 
-import static net.nothingmuch.darkzelda.utils.Constants.*;
+import static net.nothingmuch.jelda.utilities.Constants.*;
 
 /**
  * Parent abstract sword class
@@ -90,7 +90,7 @@ public abstract class Sword extends SwingWeapon {
 	
 	@Override
 	public void stopSwinging() {
-		worldManager.addToBeDestroyed( swordHitbox );
+		worldManager.destroy( swordHitbox );
 	}
 	
 	@Override

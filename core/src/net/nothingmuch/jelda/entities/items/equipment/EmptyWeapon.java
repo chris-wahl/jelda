@@ -1,6 +1,6 @@
 package net.nothingmuch.jelda.entities.items.equipment;
 
-import net.nothingmuch.darkzelda.entities.characters.Link;
+import net.nothingmuch.jelda.entities.characters.Link;
 
 /**
  * Created by christopher on 1/9/17.

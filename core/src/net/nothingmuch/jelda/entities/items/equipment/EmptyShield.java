@@ -1,7 +1,8 @@
 package net.nothingmuch.jelda.entities.items.equipment;
 
-import net.nothingmuch.darkzelda.entities.characters.Link;
-import net.nothingmuch.darkzelda.utils.assets.AssetLoader;
+import net.nothingmuch.jelda.entities.characters.Link;
+import net.nothingmuch.jelda.managers.AssetManager;
+
 
 /**
  * Created by christopher on 1/9/17.
@@ -9,7 +10,7 @@ import net.nothingmuch.darkzelda.utils.assets.AssetLoader;
 public class EmptyShield extends Shield {
 	
 	public EmptyShield( Link link ) {
-		super( "EMPTY_SHIELD", link, AssetLoader.BLANK_ANIMATIONS );
+		super( "EMPTY_SHIELD", link, AssetManager.BLANK_ANIMATIONS );
 	}
 	
 	@Override

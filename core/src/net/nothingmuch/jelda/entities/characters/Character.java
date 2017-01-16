@@ -19,22 +19,27 @@ public abstract class Character implements Drawable, Targetable {
 	/* World Fields */
 	protected Body characterBody;
 	protected GameWorld gameWorld;
-	protected Vector2 lastPos;
+	protected Vector2 lastPosition;
 	
 	/* Drawing Fields */
 	protected Sprite lastFrame;
 	
 	/* Movement Fields */
 	protected Direction directionFacing;
+	protected boolean isMoving;
 	
 	/* Methods */
-	public Character( GameWorld gameWorld ){
+	public Character( GameWorld gameWorld, float pixelCenterX, float pixelCenterY ){
 		this.gameWorld = gameWorld;
+		this.lastPosition = new Vector2( pixelCenterX, pixelCenterY );
 		createBody();
 	}
 	
 	public void update( float delta ){
-		
+		isMoving = getPosition().equals( lastPosition );
+		if( isMoving ){
+			lastPosition.set( getPosition() );
+		}
 	}
 	
 	@Override
@@ -54,6 +59,9 @@ public abstract class Character implements Drawable, Targetable {
 		return getPosition();
 	}
 	
+	public boolean isMoving(){
+		return isMoving;
+	}
 	public Vector2 getPosition(){
 		return getB2DPosition().scl( PPM );
 	}

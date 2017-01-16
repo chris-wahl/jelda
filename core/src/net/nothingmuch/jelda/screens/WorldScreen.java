@@ -33,9 +33,8 @@ public class WorldScreen extends GameScreen {
 	
 	@Override
 	public void render( float delta ) {
-		spriteBatch.begin();
+		spriteBatch.setProjectionMatrix( cameraManager.getCamera().combined );
 		gameWorldManager.draw( spriteBatch, GameStateManager.getRunTime() );
-		spriteBatch.end();
 	}
 	
 	@Override
@@ -55,6 +54,7 @@ public class WorldScreen extends GameScreen {
 	
 	@Override
 	public void dispose() {
+		spriteBatch.dispose();
 		
 	}
 }

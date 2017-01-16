@@ -1,10 +1,7 @@
 package net.nothingmuch.jelda.entities.items.equipment;
 
 import net.nothingmuch.jelda.entities.characters.Link;
-import net.nothingmuch.jelda.utilities.assets.AssetLoader;
-
-import static net.nothingmuch.jelda.utilities.Constants.Direction.DOWN;
-import static net.nothingmuch.jelda.utilities.Constants.Direction.LEFT;
+import net.nothingmuch.jelda.managers.AssetManager;
 
 /**
  * Link's O.G. Wooden Shield
@@ -12,13 +9,13 @@ import static net.nothingmuch.jelda.utilities.Constants.Direction.LEFT;
 public class WoodenShield extends Shield {
 	
 	public WoodenShield( Link link ) {
-		super( "WOODEN_SHEILD", link, AssetLoader.SHIELD_ANIMATIONS );
+		super( "WOODEN_SHEILD", link, AssetManager.SHIELD_ANIMATIONS );
 	}
 	
 	@Override
 	protected float drawOffsetX() {
 		switch( directionFacing ) {
-			case DOWN
+			case DOWN:
 				return 0;
 			case LEFT:
 				return 0;

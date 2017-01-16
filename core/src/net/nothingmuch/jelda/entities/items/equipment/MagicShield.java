@@ -1,7 +1,8 @@
 package net.nothingmuch.jelda.entities.items.equipment;
 
-import net.nothingmuch.darkzelda.entities.characters.Link;
-import net.nothingmuch.darkzelda.utils.assets.AssetLoader;
+import net.nothingmuch.jelda.entities.characters.Link;
+import net.nothingmuch.jelda.managers.AssetManager;
+
 
 /**
  * The upgraded Magic shield
@@ -9,7 +10,7 @@ import net.nothingmuch.darkzelda.utils.assets.AssetLoader;
 public class MagicShield extends Shield {
 	
 	public MagicShield( Link link ) {
-		super( "MAGIC_SHIELD", link, AssetLoader.BIG_SHIELD_ANIMATIONS );
+		super( "MAGIC_SHIELD", link, AssetManager.BIG_SHIELD_ANIMATIONS );
 	}
 	
 	@Override

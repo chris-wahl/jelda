@@ -1,34 +1,44 @@
 package net.nothingmuch.jelda.worlds;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import net.nothingmuch.jelda.entities.world_members.Level;
 import net.nothingmuch.jelda.screens.GameScreen;
 import net.nothingmuch.jelda.utilities.Constants;
 
-import static net.nothingmuch.jelda.utilities.Constants.PPM;
+import static net.nothingmuch.jelda.utilities.Constants.TILE_SIZE;
 
 /**
  * Created by christopher on 1/16/17.
  */
 public class SANDBOX extends GameWorld {
 	
-	private Box2DDebugRenderer debugRenderer;
-	
 	public SANDBOX( GameScreen gameScreen, Constants.WorldType worldType ) {
 		super( gameScreen, worldType );
-		this.debugRenderer = new Box2DDebugRenderer();
+
 		gameScreen.getCameraManager().setTargetA( link );
+		gameScreen.getCameraManager().setCameraStyle( Constants.CameraStyle.LERP_TO_TARGET_ZOOM );
+		levelGrid[ 0 ][ 0 ].load();
 	}
 	
 	@Override
 	public void doUpdate( float delta ) {
 		world.step( 1 / 60f, 6, 2 );
 		link.update( delta );
+		loadLevels();
+	}
+	
+	public void loadLevels(){
+		for( Level[] levelRow : levelGrid ){
+			for( Level level : levelRow ){
+				level.load_in_limit( link.getPosition(), 10 * TILE_SIZE );
+			}
+		}
+		
 	}
 	
 	@Override
 	public void doDraw( SpriteBatch spriteBatch, float runTime ) {
-		debugRenderer.render( world, gameScreen.getCameraManager().getCamera().combined.scl( PPM ) );
+		link.draw( spriteBatch, runTime );
 	}
 	
 	@Override

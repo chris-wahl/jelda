@@ -1,9 +1,9 @@
 package net.nothingmuch.jelda.entities.items.equipment;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import net.nothingmuch.darkzelda.entities.characters.Link;
-import net.nothingmuch.darkzelda.utils.Constants;
-import net.nothingmuch.darkzelda.utils.assets.AssetLoader;
+import net.nothingmuch.jelda.entities.characters.Link;
+import net.nothingmuch.jelda.managers.AssetManager;
+import net.nothingmuch.jelda.utilities.Constants;
 
 /**
  * Parent ring controller
@@ -32,6 +32,6 @@ public abstract class Ring extends Equippable {
 	@Override
 	public void unequip() {
 		isEquipped = false;
-		link.setDefaultShader( AssetLoader.LINK_COLOR_SHADERS.get( Constants.LinkColor.GREEN ) );
+		link.setDefaultShader( AssetManager.LINK_COLOR_SHADERS.get( Constants.LinkColor.GREEN ) );
 	}
 }

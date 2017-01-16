@@ -3,6 +3,8 @@ package net.nothingmuch.jelda.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import net.nothingmuch.jelda.utilities.CameraStyles;
@@ -23,10 +25,10 @@ public class CameraManager {
 	private Targetable targetA, targetB;
 	
 	public CameraManager(){
-		this.camera = new OrthographicCamera( WORLD_WIDTH, WORLD_HEIGHT );
-		this.camera.setToOrtho( false );
-		this.viewport = new FitViewport( WORLD_WIDTH, WORLD_HEIGHT, this.camera );
-		this.viewport.apply();
+		camera = new OrthographicCamera();
+		camera.setToOrtho( false, WORLD_WIDTH, WORLD_HEIGHT );
+		viewport = new FitViewport( WORLD_WIDTH, WORLD_HEIGHT, camera );
+		viewport.apply();
 		
 		this.zoom = 1f;
 	}
@@ -74,9 +76,16 @@ public class CameraManager {
 	public void setZoom( float zoom ){
 		this.zoom = zoom;
 	}
+	public float getZoom() {
+		return zoom;
+	}
 	
 	public void resize( int width, int height ){
 		viewport.update( width, height );
+	}
+	
+	public void debugRender( Box2DDebugRenderer debugRenderer, World world ){
+		debugRenderer.render( world, camera.combined.cpy().scl( PPM ) );
 	}
 	
 	public OrthographicCamera getCamera(){

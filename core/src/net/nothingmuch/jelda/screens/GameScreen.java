@@ -1,6 +1,7 @@
 package net.nothingmuch.jelda.screens;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Matrix4;
 import net.nothingmuch.jelda.managers.CameraManager;
 
 /**
@@ -16,7 +17,6 @@ public abstract class GameScreen implements Screen {
 	
 	
 	public void resize( int width, int height ){
-		cameraManager.resize( width, height );
 	}
 	
 	public abstract void update( float delta );
@@ -38,5 +38,9 @@ public abstract class GameScreen implements Screen {
 	
 	public CameraManager getCameraManager() {
 		return cameraManager;
+	}
+	
+	public Matrix4 getCameraCombined(){
+		return cameraManager.getCamera().combined.cpy();
 	}
 }

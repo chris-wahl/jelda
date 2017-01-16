@@ -3,7 +3,7 @@ package net.nothingmuch.jelda.entities.items.equipment;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import net.nothingmuch.darkzelda.entities.characters.Link;
+import net.nothingmuch.jelda.entities.characters.Link;
 
 /**
  * Created by christopher on 1/8/17.

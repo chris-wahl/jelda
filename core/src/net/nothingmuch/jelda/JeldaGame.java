@@ -22,6 +22,11 @@ public class JeldaGame extends Game {
 	}
 	
 	@Override
+	public void resize( int width, int height ) {
+		gameStateManager.resize( width, height );
+	}
+	
+	@Override
 	public void dispose () {
 		gameStateManager.dispose();
 	}

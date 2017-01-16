@@ -3,11 +3,11 @@ package net.nothingmuch.jelda.entities.items.equipment;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import net.nothingmuch.darkzelda.entities.characters.Link;
+import net.nothingmuch.jelda.entities.characters.Link;
 
 import java.util.HashMap;
 
-import static net.nothingmuch.darkzelda.utils.Constants.Direction;
+import static net.nothingmuch.jelda.utilities.Constants.Direction;
 
 /**
  * Shield parent abstract class
