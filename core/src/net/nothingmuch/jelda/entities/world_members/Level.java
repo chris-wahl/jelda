@@ -1,8 +1,11 @@
 package net.nothingmuch.jelda.entities.world_members;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import net.nothingmuch.jelda.managers.MapManager;
 import net.nothingmuch.jelda.utilities.b2d.BodyBuilder;
+import net.nothingmuch.jelda.utilities.interfaces.Drawable;
 import net.nothingmuch.jelda.utilities.interfaces.Targetable;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
@@ -10,24 +13,27 @@ import static net.nothingmuch.jelda.utilities.Constants.*;
 /**
  * TODO: Load tiles, set level sensors, set hitboxes, set lighting.  Reconsider building entire grid from that python zelda map
  */
-public class Level implements Targetable {
-	// TODO: Load tiles
+public class Level implements Targetable, Drawable {
+	// TODO: Load Sensors
+	protected final String id;
 	protected GameWorld gameWorld;
 	protected Body levelCenter;
 	protected Tile[][] tileGrid;
 	
 	public Level( GameWorld gameWorld, int levelGridX, int levelGridY ) {
 		this.gameWorld = gameWorld;
+		this.id = levelGridX + "x" + levelGridY;
 		float levelX = levelGridX * W_LEVEL_TILE + W_LEVEL_TILE / 2f;
 		float levelY = levelGridY * H_LEVEL_TILE + H_LEVEL_TILE / 2f;
 		this.levelCenter = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, levelX, levelY, 2f, 2f, BIT_NOCOLLISION, BIT_SENSOR );
-		
-		Vector2 pos;
+				
 		tileGrid = new Tile[ W_LEVEL ][ H_LEVEL ];
 		for( int x = 0; x < W_LEVEL; x++ ){
 			for( int y = 0; y < H_LEVEL; y++ ){
-				pos = toPixel( this, x, y );
-				tileGrid[ x ][ y ] = new Tile( gameWorld, pos );
+				int mapGridX = levelGridX * W_LEVEL + x;
+				int mapGridY = levelGridY * H_LEVEL + y;
+				tileGrid[ x ][ y ] = new Tile( gameWorld, MapManager.tileRef( mapGridX, mapGridY ), toPixel( this, x, y ) );
+				
 			}
 		}
 	}
@@ -71,6 +77,20 @@ public class Level implements Targetable {
 		}
 	}
 	
+	@Override
+	public void draw( SpriteBatch spriteBatch, float runTime ) {
+		for( int x = 0; x < W_LEVEL; x++ ){
+			for( int y = 0; y < H_LEVEL; y++ ){
+				try {
+					tileGrid[ x ][ y ].draw( spriteBatch, runTime );
+				} catch( Exception e ) {
+					System.out.println( id + " -- " + x + ", " + y + ": " + tileGrid[ x ][ y ].tileReference );
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Gives the pixel x-coordinate at the center of the level tile
 	 *
@@ -102,7 +122,6 @@ public class Level implements Targetable {
 	public static Vector2 toPixel( Level level, int tileGridX, int tileGridY ){
 		return new Vector2( toPixelX( level, tileGridX ), toPixelY( level, tileGridY ) );
 	}
-	
 	@Override
 	public Vector2 getCamTarget() {
 		return getPosition();

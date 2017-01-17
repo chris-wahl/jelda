@@ -34,7 +34,7 @@ public abstract class GameWorld {
 		this.world = new World( new Vector2( 0, 0 ), false );
 		this.world.setContactListener( new WorldContactListener( this ) );
 		this.rayHandler = new RayHandler( world );
-		float lvl = 200f;
+		float lvl = 150f;
 		
 		rayHandler.setAmbientLight( lvl / 255f );
 		initGrid();
