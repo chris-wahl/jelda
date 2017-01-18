@@ -46,8 +46,8 @@ public class GameStateManager {
 		} else if( Gdx.input.isKeyJustPressed( Input.Keys.R ) ) {
 			setState( currentState );
 		}
-		states.peek().update( delta );
 		cameraManager.update( delta );
+		states.peek().update( delta );
 	}
 	
 	public void render( float delta ){

@@ -29,7 +29,6 @@ public class CameraManager {
 		this.camera.setToOrtho( false, WORLD_WIDTH, WINDOW_HEIGHT );
 		this.viewport = new FitViewport( WORLD_WIDTH, WORLD_HEIGHT, this.camera );
 		this.viewport.apply();
-		
 		this.zoom = 1f;
 	}
 	
@@ -51,7 +50,8 @@ public class CameraManager {
 				CameraStyles.lockAverageBetweenTargets( camera, targetA.getCamTarget(), targetB.getCamTarget() );
 				break;
 		}
-		//(updateCamera( delta );
+		
+		updateCamera( delta );
 	}
 	
 	public void setCameraStyle( CameraStyle cameraStyle ){
@@ -70,6 +70,7 @@ public class CameraManager {
 	}
 	
 	private void updateCamera( float delta ){
+		viewport.apply();
 		camera.update();
 	}
 	

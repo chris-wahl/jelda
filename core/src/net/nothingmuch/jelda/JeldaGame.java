@@ -8,8 +8,10 @@ public class JeldaGame extends Game {
 
 	private GameStateManager gameStateManager;
 	private float delta;
+	
 	@Override
 	public void create () {
+		
 		gameStateManager = new GameStateManager( this );
 	}
 

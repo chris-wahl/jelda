@@ -9,7 +9,6 @@ import static net.nothingmuch.jelda.utilities.Constants.WINDOW_WIDTH;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		final float aspect_ratio = 16f / 9f;
 		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		

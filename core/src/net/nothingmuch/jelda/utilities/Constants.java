@@ -30,8 +30,8 @@ public class Constants {
 	public final static int WINDOW_WIDTH = 1600,
 			WINDOW_HEIGHT = 900;
 	private final static float ASPECT_RATIO = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
-	public final static int WORLD_WIDTH = 640,
-			WORLD_HEIGHT = (int) ( WORLD_WIDTH / ASPECT_RATIO );
+	public final static int WORLD_WIDTH = 256,
+			WORLD_HEIGHT = 240;//(int) ( WORLD_WIDTH / ASPECT_RATIO );
 	
 	public enum CameraStyle {
 		LERP_TO_TARGET,

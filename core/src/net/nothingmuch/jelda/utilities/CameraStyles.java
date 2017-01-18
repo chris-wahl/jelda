@@ -11,14 +11,12 @@ public class CameraStyles {
 	
 	public static void lockOnTarget( OrthographicCamera camera, Vector2 target ) {
 		camera.position.set( target.x, target.y, 0 );
-		camera.update();
 	}
 	
 	public static void lerpToTarget( OrthographicCamera camera, float x, float y ){
 		// camera pixelPosition + ( target pixelPosition - camera pixelPosition ) * lerp/smoothing factor
 		camera.position.x += ( x - camera.position.x ) * 0.1f;
 		camera.position.y += ( y - camera.position.y ) * 0.1f;
-		camera.update();
 	}
 	
 	public static void lerpToTargetZoom( OrthographicCamera camera, Vector2 target, float zoom ) {
@@ -40,7 +38,6 @@ public class CameraStyles {
 		position.x = ( targetA.x + targetB.x ) / 2f;
 		position.y = ( targetA.y + targetB.y ) / 2f;
 		camera.position.set( position );
-		camera.update();
 	}
 	
 	public static void lerpAverageBetweenTargets( OrthographicCamera camera, Vector2 targetA, Vector2 targetB ) {
