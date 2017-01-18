@@ -1,0 +1,25 @@
+TODO: World Transition Plan
+  INSIDE WORLD
+    1. Load Inside World TileTextures
+        - Modify MapManager to handle different classes of maps
+    2. Build Inside World level template
+    3. Set exit doorway for Inside World level
+
+  DOOR SENSORS
+    1.  Design doorway sensors
+        - Given a level & tilegrid position
+        - Given overworld doorway ( single tile ) or inside room ( double tile )
+        - Autoadjust position and width as a result
+        OR
+        - Make InsideDoorSensor an extended class
+
+    2.  Detect doorways
+    3.  Place Doorway Sensors:
+        - Tell sensor which world to transition to
+        - Which room in that world to transition to
+        - Use Spawnpoint in that room
+
+
+NOTES::  What gets loaded first?  Map/Textures or Levels?
+            - If levels, set up doorsensor detector in MapManager/Texture
+            - If MapManager, set up doorsensor detector in tile creation (Level reference needs to exist to pass to DoorSensorTarget)

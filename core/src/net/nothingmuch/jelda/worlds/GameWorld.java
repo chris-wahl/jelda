@@ -127,4 +127,9 @@ public abstract class GameWorld {
 	public void scrollWheel( float scrolled ){
 		gameScreen.getCameraManager().setZoom( gameScreen.getCameraManager().getZoom() + scrolled );
 	}
+	
+	public void dispose(){
+		world.dispose();
+		rayHandler.dispose();
+	}
 }

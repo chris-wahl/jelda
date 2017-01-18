@@ -2,6 +2,7 @@ package net.nothingmuch.jelda;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import net.nothingmuch.jelda.managers.AssetManager;
 import net.nothingmuch.jelda.managers.GameStateManager;
 
 public class JeldaGame extends Game {
@@ -11,7 +12,7 @@ public class JeldaGame extends Game {
 	
 	@Override
 	public void create () {
-		
+		AssetManager.load();
 		gameStateManager = new GameStateManager( this );
 	}
 
@@ -31,5 +32,6 @@ public class JeldaGame extends Game {
 	@Override
 	public void dispose () {
 		gameStateManager.dispose();
+		AssetManager.dispose();
 	}
 }

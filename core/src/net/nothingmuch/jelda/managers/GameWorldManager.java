@@ -60,4 +60,10 @@ public class GameWorldManager {
 	public GameWorld getCurrentGameWorld() {
 		return currentWorld;
 	}
+	
+	public void dispose() {
+		currentWorld.dispose();
+		debugRenderer.dispose();
+		MapManager.dispose();
+	}
 }

@@ -6,7 +6,7 @@ import net.nothingmuch.jelda.managers.GameStateManager;
 import net.nothingmuch.jelda.managers.GameWorldManager;
 
 /**
- * Created by christopher on 1/15/17.
+ * Screen for managing when Link is in the GameWorld and moving around
  */
 public class WorldScreen extends GameScreen {
 	
@@ -23,7 +23,6 @@ public class WorldScreen extends GameScreen {
 	public void update( float delta ) {
 		gameWorldManager.update( delta );
 		cameraManager.update( delta );
-		
 	}
 	
 	@Override
@@ -54,6 +53,7 @@ public class WorldScreen extends GameScreen {
 	
 	@Override
 	public void dispose() {
+		gameWorldManager.dispose();
 		spriteBatch.dispose();
 		
 	}

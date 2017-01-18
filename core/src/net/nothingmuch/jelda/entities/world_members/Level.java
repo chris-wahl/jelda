@@ -14,10 +14,11 @@ import net.nothingmuch.jelda.worlds.GameWorld;
 
 import static net.nothingmuch.jelda.utilities.Constants.*;
 /**
- * TODO: Load tiles, set level sensors, set hitboxes, set lighting.  Reconsider building entire grid from that python zelda map
+ * TODO: set level sensors, set lighting.
  */
 public class Level implements Targetable, Drawable, Spawnable {
 	// TODO: Load Sensors
+	
 	public final String id;
 	protected GameWorld gameWorld;
 	

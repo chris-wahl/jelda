@@ -1,8 +1,9 @@
 package net.nothingmuch.jelda.entities.world_members;
 
+import net.nothingmuch.jelda.utilities.b2d.BodyBuilder;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
-import static net.nothingmuch.jelda.utilities.Constants.WorldType;
+import static net.nothingmuch.jelda.utilities.Constants.*;
 
 /**
  * Door Sensor class
@@ -11,25 +12,24 @@ import static net.nothingmuch.jelda.utilities.Constants.WorldType;
  */
 public class DoorSensor extends Sensor {
 	
-	private Tile tile;
-	
+	protected Tile tile;
 	private DoorSensorTarget sensorTarget;
-	private boolean isActive;
 	
 	public DoorSensor( GameWorld gameWorld, DoorSensorTarget sensorTarget, Tile tile ){
 		super( gameWorld );
 		this.sensorTarget = sensorTarget;
 		this.tile = tile;
+		this.isActive = false;
 	}
 	
 	public DoorSensor( GameWorld gameWorld, DoorSensorTarget sensorTarget, Tile tile, boolean isActive ){
 		this( gameWorld, sensorTarget, tile );
-		this.isActive = isActive;
+		this.activate();
 	}
 	
 	@Override
 	protected void makeSensorBody() {
-		
+		sensorBody = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, tile.pixelPosition.x, tile.pixelPosition.y, TILE_SIZE, TILE_SIZE / 4f, BIT_LINK_FFET, GINDEX_SENSOR );
 	}
 	
 	@Override
@@ -55,7 +55,6 @@ public class DoorSensor extends Sensor {
 			this.targetLevelX = targetLevelX;
 			this.targetLevelY = targetLevelY;
 		}
-		
 	}
 	
 	

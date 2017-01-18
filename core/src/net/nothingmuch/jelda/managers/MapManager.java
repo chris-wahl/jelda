@@ -14,17 +14,18 @@ import static net.nothingmuch.jelda.utilities.Constants.TILE_SIZE;
 public class MapManager {
 	
 	private static HashMap<Integer, TextureRegion> tileTextures;
+	private static Texture TILE_TEXTURE;
 	private static int[][] MAP_GRID;
 	private static boolean isLoaded = false;
 	
 	public static void load(){
-		Texture owtiles = new Texture( Gdx.files.internal( "levels/overworld/overworldtiles.png" ) );
+		TILE_TEXTURE = new Texture( Gdx.files.internal( "levels/overworld/overworldtiles.png" ) );
 		tileTextures = new HashMap<Integer, TextureRegion>();
 		
 		int n = 0;
-		for( int y = 1; y < owtiles.getHeight(); y += 17 ){
-			for( int x = 1; x < owtiles.getWidth(); x += 17 ){
-				tileTextures.put( n, new TextureRegion( owtiles, x, y, TILE_SIZE, TILE_SIZE ) );
+		for( int y = 1; y < TILE_TEXTURE.getHeight(); y += 17 ){
+			for( int x = 1; x < TILE_TEXTURE.getWidth(); x += 17 ){
+				tileTextures.put( n, new TextureRegion( TILE_TEXTURE, x, y, TILE_SIZE, TILE_SIZE ) );
 				n++;
 			}
 			n+=2;
@@ -52,7 +53,14 @@ public class MapManager {
 	
 	public static TextureRegion textRef( int tileRef ){
 		// TODO: Handle door sensors
+		/*
+		*
+		* */
 		if( tileRef == Integer.parseInt( "12", 16 ) ) tileRef = Integer.parseInt( "18", 16 );
 		return tileTextures.get( tileRef );
+	}
+	
+	public static void dispose(){
+		TILE_TEXTURE.dispose();
 	}
 }
