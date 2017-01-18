@@ -25,10 +25,10 @@ public class CameraManager {
 	private Targetable targetA, targetB;
 	
 	public CameraManager(){
-		camera = new OrthographicCamera();
-		camera.setToOrtho( false, WORLD_WIDTH, WORLD_HEIGHT );
-		viewport = new FitViewport( WORLD_WIDTH, WORLD_HEIGHT, camera );
-		viewport.apply();
+		this.camera = new OrthographicCamera();
+		this.camera.setToOrtho( false, WORLD_WIDTH, WINDOW_HEIGHT );
+		this.viewport = new FitViewport( WORLD_WIDTH, WORLD_HEIGHT, this.camera );
+		this.viewport.apply();
 		
 		this.zoom = 1f;
 	}
@@ -51,7 +51,7 @@ public class CameraManager {
 				CameraStyles.lockAverageBetweenTargets( camera, targetA.getCamTarget(), targetB.getCamTarget() );
 				break;
 		}
-		updateCamera( delta );
+		//(updateCamera( delta );
 	}
 	
 	public void setCameraStyle( CameraStyle cameraStyle ){

@@ -1,11 +1,14 @@
 package net.nothingmuch.jelda.entities.world_members;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.managers.MapManager;
 import net.nothingmuch.jelda.utilities.b2d.BodyBuilder;
 import net.nothingmuch.jelda.utilities.interfaces.Drawable;
+import net.nothingmuch.jelda.utilities.interfaces.Spawnable;
 import net.nothingmuch.jelda.utilities.interfaces.Targetable;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
@@ -13,16 +16,23 @@ import static net.nothingmuch.jelda.utilities.Constants.*;
 /**
  * TODO: Load tiles, set level sensors, set hitboxes, set lighting.  Reconsider building entire grid from that python zelda map
  */
-public class Level implements Targetable, Drawable {
+public class Level implements Targetable, Drawable, Spawnable {
 	// TODO: Load Sensors
-	protected final String id;
+	public final String id;
 	protected GameWorld gameWorld;
+	
 	protected Body levelCenter;
+	protected int levelGridX, levelGridY;
+	protected Vector2 spawnPoint;
+	
 	protected Tile[][] tileGrid;
+	protected boolean isLoaded = false;
 	
 	public Level( GameWorld gameWorld, int levelGridX, int levelGridY ) {
 		this.gameWorld = gameWorld;
 		this.id = levelGridX + "x" + levelGridY;
+		this.levelGridX = levelGridX;
+		this.levelGridY = levelGridY;
 		float levelX = levelGridX * W_LEVEL_TILE + W_LEVEL_TILE / 2f;
 		float levelY = levelGridY * H_LEVEL_TILE + H_LEVEL_TILE / 2f;
 		this.levelCenter = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, levelX, levelY, 2f, 2f, BIT_NOCOLLISION, BIT_SENSOR );
@@ -39,9 +49,12 @@ public class Level implements Targetable, Drawable {
 	}
 	
 	public void load(){
+		Gdx.app.log( id, "Loaded" );
 		load_unload_loop( true );
+		gameWorld.addLoadedLevel( this );
 	}
 	public void unload() {
+		Gdx.app.log( id, "Unloaded" );
 		load_unload_loop( false );
 	}
 	private void load_unload_loop( boolean load ){
@@ -51,6 +64,7 @@ public class Level implements Targetable, Drawable {
 				else t.unload();
 			}
 		}
+		isLoaded = load;
 	}
 	
 	public void load_in_limit( Vector2 position, final float MAX_PIXEL_X, final float MAX_PIXEL_Y ){
@@ -122,12 +136,47 @@ public class Level implements Targetable, Drawable {
 	public static Vector2 toPixel( Level level, int tileGridX, int tileGridY ){
 		return new Vector2( toPixelX( level, tileGridX ), toPixelY( level, tileGridY ) );
 	}
+	
+	public static int toLevelGridX( float pixelX ){
+		return (int) ( pixelX / W_LEVEL_TILE );
+	}
+	public static int toLevelGridY( float pixelY ){
+		return (int) ( pixelY / H_LEVEL_TILE );
+	}
+	
 	@Override
 	public Vector2 getCamTarget() {
 		return getPosition();
 	}
 	
+	@Override
+	public Vector2 getSpawnPoint() {
+		if( spawnPoint == null ) return getPosition();
+		return spawnPoint.cpy();
+	}
+	
+	public void setSpawnPoint( int tileGridX, int tileGridY ){
+		if( spawnPoint == null ) spawnPoint = new Vector2();
+		spawnPoint.set( tileGrid[ tileGridX ][ tileGridY ].pixelPosition );
+		
+	}
+	public void setSpawnPoint( Vector2 tileGrid ){
+		setSpawnPoint( (int) tileGrid.x, (int) tileGrid.y );
+	}
+	
 	public Vector2 getPosition(){
 		return levelCenter.getPosition().scl( PPM );
+	}
+	
+	public boolean isLoaded() {
+		return isLoaded;
+	}
+	
+	public int gridDist( Link link ) {
+		int x = toLevelGridX( link.getPosition().x );
+		int y = toLevelGridY( link.getPosition().y );
+		return Math.max( Math.abs( levelGridX - toLevelGridX( link.getPosition().x ) ),
+					     Math.abs( levelGridY - toLevelGridY( link.getPosition().y ) )) ;
+		
 	}
 }

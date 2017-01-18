@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import net.nothingmuch.jelda.utilities.interfaces.Drawable;
+import net.nothingmuch.jelda.utilities.interfaces.Spawnable;
 import net.nothingmuch.jelda.utilities.interfaces.Targetable;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
@@ -61,6 +62,21 @@ public abstract class Character implements Drawable, Targetable {
 	
 	public boolean isMoving(){
 		return isMoving;
+	}
+	public void setPosition( Spawnable spawnPoint ){
+		setPosition( spawnPoint.getSpawnPoint() );
+	}
+	public void setPosition( Vector2 position ){
+		setPosition( position.x, position.y );
+	}
+	public void setPosition( float x, float y ){
+		setB2DPosition( x / PPM, y / PPM );
+	}
+	public void setB2DPosition( Vector2 position ){
+		setB2DPosition( position.x, position.y );
+	}
+	public void setB2DPosition( float x, float y ) {
+		characterBody.setTransform( x, y, 0 );
 	}
 	public Vector2 getPosition(){
 		return getB2DPosition().scl( PPM );

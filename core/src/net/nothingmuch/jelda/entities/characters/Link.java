@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import net.nothingmuch.jelda.managers.AssetManager;
 import net.nothingmuch.jelda.utilities.b2d.BodyBuilder;
-import net.nothingmuch.jelda.utilities.interfaces.Targetable;
+import net.nothingmuch.jelda.utilities.interfaces.Spawnable;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
 import java.util.HashMap;
@@ -34,8 +34,8 @@ public class Link extends Character {
 		this( gameWorld, pixelPosition.x, pixelPosition.y );
 	}
 	
-	public Link( GameWorld gameworld, Targetable spawnTarget ){
-		this( gameworld, spawnTarget.getCamTarget() );
+	public Link( GameWorld gameworld, Spawnable spawnTarget ){
+		this( gameworld, spawnTarget.getSpawnPoint() );
 	}
 	
 	protected void createBody(){

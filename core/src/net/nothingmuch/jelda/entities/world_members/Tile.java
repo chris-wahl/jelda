@@ -17,11 +17,14 @@ import static net.nothingmuch.jelda.utilities.Constants.TILE_SIZE;
 public class Tile implements Drawable {
 	// TODO: Handle tileref HEX( 12 ) as a door sensor
 	
-	protected boolean isLoaded = false;
+	protected boolean isLoaded = false,
+					  hasSensor = false;
 	protected final int tileReference;
 	
 	protected Body tileBody;
 	protected Vector2 pixelPosition;
+	
+	private Sensor sensor;
 	private GameWorld gameWorld;
 	
 	public Tile( GameWorld gameWorld, final int tileReference, float pixelCenterX, float pixelCenterY ) {
@@ -36,14 +39,25 @@ public class Tile implements Drawable {
 	
 	public void load(){
 		if( isLoaded ) return;
+		if( hasSensor ) sensor.activate();
 		tileBody = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, pixelPosition.x, pixelPosition.y, TILE_SIZE, TILE_SIZE, BIT_NOCOLLISION, BIT_NOCOLLISION );
 		isLoaded = true;
 	}
 	
 	public void unload(){
 		if( !isLoaded ) return;
+		if( hasSensor ) sensor.deactivate();
 		gameWorld.destroy( tileBody );
 		isLoaded = false;
+	}
+	
+	public void setSensor( Sensor sensor ){
+		this.sensor = sensor;
+		this.hasSensor = true;
+	}
+	
+	public boolean hasSensor(){
+		return hasSensor;
 	}
 	
 	@Override

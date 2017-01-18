@@ -19,13 +19,13 @@ public class GameStateManager {
 	
 	private CameraManager cameraManager;
 	
-	
 	private Stack<GameScreen> states;
 	private State currentState;
 	
 	public GameStateManager( JeldaGame jeldaGame ){
 		this.jeldaGame = jeldaGame;
 		this.states = new Stack<GameScreen>();
+		
 		this.cameraManager = new CameraManager();
 		this.cameraManager.setCameraStyle( Constants.CameraStyle.LERP_TO_TARGET );
 		runTime = 0;
@@ -57,7 +57,7 @@ public class GameStateManager {
 	
 	public void resize( int width, int height ){
 		cameraManager.resize( width, height );
-		states.peek().resize( width, height );
+		states.peek().resize( (int) cameraManager.getCamera().viewportWidth, (int) cameraManager.getCamera().viewportHeight );
 	}
 	
 	public void dispose(){
