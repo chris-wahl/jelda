@@ -40,6 +40,7 @@ public class GameStateManager {
 	}
 	
 	public void update( float delta ){
+		
 		runTime += delta;
 		if( Gdx.input.isKeyPressed( Input.Keys.Q ) ) {
 			Gdx.app.exit();
@@ -48,11 +49,14 @@ public class GameStateManager {
 		}
 		cameraManager.update( delta );
 		states.peek().update( delta );
+		
 	}
 	
 	public void render( float delta ){
+
 		cameraManager.ClearScreen();
 		states.peek().render( delta );
+
 	}
 	
 	public void resize( int width, int height ){

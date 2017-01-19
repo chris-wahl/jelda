@@ -6,8 +6,8 @@ package net.nothingmuch.jelda.utilities;
 public class Constants {
 	
 	public static final boolean DEBUG = true;
-	/* PHYSICS CONSTANTS */
 	
+	/* PHYSICS CONSTANTS */
 	/*
 		* If group incidices are NOT of the same magnitude, or magnitude of 0, collision given by category & mash bits apply.
 		*
@@ -50,6 +50,10 @@ public class Constants {
 	public final static int TILE_SIZE = 16;
 	public static final int W_LEVEL = 16, W_LEVEL_TILE = W_LEVEL * TILE_SIZE,
 			H_LEVEL = 11, H_LEVEL_TILE = H_LEVEL * TILE_SIZE;
+	
+	/* OVERWORLD TILE REFERENCES */
+	public static final int DOOR_REF = Integer.parseInt( "12", 16 );
+	public static final int BLANK_TILE_REF = Integer.parseInt( "18", 16 );
 	
 	public enum WorldType {
 		OVERWORLD( 16, 8 ),

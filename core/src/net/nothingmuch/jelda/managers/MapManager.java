@@ -6,22 +6,45 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
 
-import static net.nothingmuch.jelda.utilities.Constants.TILE_SIZE;
+import static net.nothingmuch.jelda.utilities.Constants.*;
 
 /**
  *
  */
 public class MapManager {
+		
+	private HashMap<Integer, TextureRegion> tileTextures;
+	private Texture TILE_TEXTURE;
+	private int[][] MAP_GRID;
 	
-	public static final int DOOR_REF = Integer.parseInt( "12", 16 );
-	public static final int BLANK_TILE_REF = Integer.parseInt( "18", 16 );
-	private static HashMap<Integer, TextureRegion> tileTextures;
-	private static Texture TILE_TEXTURE;
-	private static int[][] MAP_GRID;
-	private static boolean isLoaded = false;
+	private final String TILE_PATH;
+	private final String MAP_FILE;
 	
-	public static void load(){
-		TILE_TEXTURE = new Texture( Gdx.files.internal( "levels/overworld/overworldtiles.png" ) );
+	private final WorldType worldType;
+	
+	public MapManager( WorldType worldType ){
+		this.worldType = worldType;
+		switch( worldType ){
+			default:
+			case OVERWORLD:
+				TILE_PATH = "levels/overworld/overworldtiles.png";
+				MAP_FILE = "levels/overworld/owtileblocks.lvl";
+				break;
+			case INSIDE:
+				TILE_PATH = "levels/inside/insidetiles.png";
+				MAP_FILE = "levels/inside/intileblocks.lvl";
+				break;
+			case DUNGEON_0:
+				TILE_PATH = "levels/dungeon/d0tiles.png";
+				MAP_FILE = "levels/dungeon/d0tileblocks.lvl";
+		}
+		loadMap();
+		loadTiles();
+		
+	}
+	
+	private void loadTiles() {
+		TILE_TEXTURE = new Texture( TILE_PATH );
 		tileTextures = new HashMap<Integer, TextureRegion>();
 		
 		int n = 0;
@@ -32,14 +55,15 @@ public class MapManager {
 			}
 			n+=2;
 		}
-		
-		tileTextures.put( DOOR_REF, tileTextures.get( BLANK_TILE_REF ) );
-		
-		/* Turn the file into a grid */
-		String MAP_FILE = Gdx.files.internal( "levels/overworld/owtileblocks.lvl" ).readString();
+		if( worldType == WorldType.OVERWORLD )
+			tileTextures.put( DOOR_REF, tileTextures.get( BLANK_TILE_REF ) );
+			// TODO: Setup Inside door tiles vs. Dungeon door tiles
+	}
+	private void loadMap(){
+		String MAP_TEXT = Gdx.files.internal( MAP_FILE ).readString();
 		MAP_GRID = new int[ 256 ][ 88 ];
 		
-		String[] maprows = MAP_FILE.split( "\n" );
+		String[] maprows = MAP_TEXT.split( "\n" );
 		int len = maprows.length;
 		for( int y = 0; y < maprows.length; y++ ){
 			String[] maptiles = maprows[ len - 1 - y ].split( " " );
@@ -47,23 +71,16 @@ public class MapManager {
 				MAP_GRID[ x ][ y ] = Integer.parseInt( maptiles[ x ], 16 );
 			}
 		}
-		isLoaded = true;
+
 	}
 	
-	public static int tileRef( int mapGridX, int mapGridY ){
-		if( !isLoaded ) load();
+	public int tileRef( int mapGridX, int mapGridY ){
 		return MAP_GRID[ mapGridX ][ mapGridY ];
 	}
-	
-	public static TextureRegion textRef( int tileRef ){
-		// TODO: Handle door sensors
-		/*
-		*
-		* */
+	public TextureRegion textRef( int tileRef ){
 		return tileTextures.get( tileRef );
 	}
-	
-	public static void dispose(){
+	public void dispose(){
 		TILE_TEXTURE.dispose();
 	}
 }

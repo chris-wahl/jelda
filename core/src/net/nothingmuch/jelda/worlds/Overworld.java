@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
-import net.nothingmuch.jelda.managers.MapManager;
 import net.nothingmuch.jelda.screens.GameScreen;
 
 import static net.nothingmuch.jelda.utilities.Constants.CameraStyle;
@@ -20,7 +19,6 @@ public class Overworld extends GameWorld {
 
 		gameScreen.getCameraManager().setTargetA( this.link );
 		gameScreen.getCameraManager().setCameraStyle( CameraStyle.LERP_TO_TARGET_ZOOM );
-		MapManager.load();
 	}
 	
 	public Overworld( GameScreen gameScreen, Link link, boolean setInWorld ) {

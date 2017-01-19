@@ -15,6 +15,8 @@ public class DesktopLauncher {
 		config.title = "Jelda";
 		config.width = WINDOW_WIDTH;
 		config.height = WINDOW_HEIGHT;
+		config.foregroundFPS = 60;
+		config.backgroundFPS = 60;
 		
 		new LwjglApplication(new JeldaGame(), config);
 	}

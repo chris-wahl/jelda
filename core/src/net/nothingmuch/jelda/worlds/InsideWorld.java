@@ -32,12 +32,12 @@ public class InsideWorld extends GameWorld {
 	
 	@Override
 	public void doUpdate( float delta ) {
-		
+		link.update( delta );
 	}
 	
 	@Override
 	public void doDraw( SpriteBatch spriteBatch, float runTime ) {
-		
+		link.draw( spriteBatch, runTime );
 	}
 	
 	@Override

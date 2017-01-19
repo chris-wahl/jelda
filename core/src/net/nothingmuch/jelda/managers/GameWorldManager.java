@@ -19,7 +19,7 @@ import static net.nothingmuch.jelda.utilities.Constants.PPM;
  * Created by christopher on 1/15/17.
  */
 public class GameWorldManager {
-	
+		
 	private Overworld overWorld;
 	private InsideWorld insideWorld;
 	private GameWorld currentWorld;
@@ -45,17 +45,20 @@ public class GameWorldManager {
 	}
 	
 	public void update( float delta ){
+		
 		currentWorld.update( delta );
-		currentWorld.postupdate();
+		
+		
 	}
 	
 	public void draw( SpriteBatch spriteBatch, float runTime ){
 		spriteBatch.begin();
 		currentWorld.draw( spriteBatch, runTime );
 		spriteBatch.end();
-		
 		debugRenderer.render( currentWorld.getWorld(), gameScreen.getCameraCombined().scl( PPM ) );
+		
 		currentWorld.getRayHandler().render();
+		
 	}
 	
 	public void sendMovement( Direction direction, boolean doMove ) {
@@ -86,6 +89,5 @@ public class GameWorldManager {
 	public void dispose() {
 		currentWorld.dispose();
 		debugRenderer.dispose();
-		MapManager.dispose();
 	}
 }

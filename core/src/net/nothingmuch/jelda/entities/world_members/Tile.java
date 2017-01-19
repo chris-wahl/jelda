@@ -27,11 +27,13 @@ public class Tile implements Drawable {
 	
 	private Sensor sensor;
 	private GameWorld gameWorld;
+	private MapManager mapManager;
 	
 	public Tile( GameWorld gameWorld, final int tileReference, float pixelCenterX, float pixelCenterY ) {
 		this.pixelPosition = new Vector2( pixelCenterX, pixelCenterY );
 		this.tileReference = tileReference;
 		this.gameWorld = gameWorld;
+		this.mapManager = gameWorld.getMapManager();
 		this.isCollidable = false;
 	}
 	
@@ -68,7 +70,7 @@ public class Tile implements Drawable {
 	@Override
 	public void draw( SpriteBatch spriteBatch, float runTime ) {
 		if( !isLoaded ) return;
-		spriteBatch.draw( MapManager.textRef( tileReference ), pixelPosition.x - TILE_SIZE / 2f, pixelPosition.y - TILE_SIZE / 2f );
+		spriteBatch.draw( mapManager.textRef( tileReference ), pixelPosition.x - TILE_SIZE / 2f, pixelPosition.y - TILE_SIZE / 2f );
 	}
 	
 	/**

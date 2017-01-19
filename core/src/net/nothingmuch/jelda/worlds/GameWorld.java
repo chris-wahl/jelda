@@ -10,6 +10,7 @@ import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.characters.LinkBody;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
+import net.nothingmuch.jelda.managers.MapManager;
 import net.nothingmuch.jelda.managers.WorldContactListener;
 import net.nothingmuch.jelda.screens.GameScreen;
 
@@ -24,6 +25,7 @@ import static net.nothingmuch.jelda.utilities.Constants.WorldType;
 public abstract class GameWorld {
 	
 	protected final WorldType worldType;
+	protected final MapManager mapManager;
 	protected World world;
 	protected Array<Body> toBeDestoryed = new Array<Body>();
 	protected RayHandler rayHandler;
@@ -41,6 +43,8 @@ public abstract class GameWorld {
 		this.worldType = worldType;
 		this.gameScreen = gameScreen;
 		this.link = link;
+		
+		this.mapManager = new MapManager( worldType );
 		
 		this.world = new World( new Vector2( 0, 0 ), false );
 		this.world.setContactListener( new WorldContactListener( this ) );
@@ -77,6 +81,7 @@ public abstract class GameWorld {
 	public void update( float delta ){
 		world.step( 1 / 60f, 6, 2 );
 		doUpdate( delta );
+		postupdate();
 	}
 	public void postupdate(){
 		checkLoadedLevels();
@@ -116,7 +121,7 @@ public abstract class GameWorld {
 				reference.unload();
 				levelIterator.remove();
 			} else {
-				reference.load_in_limit( link.getPosition(), PIXEL_DRAW_LIMIT );
+				//reference.load_in_limit( link.getPosition(), PIXEL_DRAW_LIMIT );
 			}
 		}
 	}
@@ -141,6 +146,7 @@ public abstract class GameWorld {
 	public void dispose(){
 		world.dispose();
 		rayHandler.dispose();
+		mapManager.dispose();
 	}
 	
 	public WorldType getWorldType() {
@@ -149,5 +155,9 @@ public abstract class GameWorld {
 	
 	public LinkBody getLinkBody() {
 		return linkBody;
+	}
+	
+	public MapManager getMapManager() {
+		return mapManager;
 	}
 }

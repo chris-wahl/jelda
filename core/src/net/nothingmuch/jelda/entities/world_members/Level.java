@@ -22,6 +22,7 @@ public class Level implements Targetable, Drawable, Spawnable {
 	
 	public final String id;
 	protected GameWorld gameWorld;
+	protected MapManager mapManager;
 	
 	protected Body levelCenter;
 	protected int levelGridX, levelGridY;
@@ -32,6 +33,7 @@ public class Level implements Targetable, Drawable, Spawnable {
 	
 	public Level( GameWorld gameWorld, int levelGridX, int levelGridY ) {
 		this.gameWorld = gameWorld;
+		this.mapManager = gameWorld.getMapManager();
 		this.id = levelGridX + "x" + levelGridY;
 		this.levelGridX = levelGridX;
 		this.levelGridY = levelGridY;
@@ -44,8 +46,8 @@ public class Level implements Targetable, Drawable, Spawnable {
 			for( int y = 0; y < H_LEVEL; y++ ){
 				int mapGridX = levelGridX * W_LEVEL + x;
 				int mapGridY = levelGridY * H_LEVEL + y;
-				tileGrid[ x ][ y ] = new Tile( gameWorld, MapManager.tileRef( mapGridX, mapGridY ), toPixel( this, x, y ) );
-				if( tileGrid[ x ][ y ].tileReference == MapManager.DOOR_REF ){
+				tileGrid[ x ][ y ] = new Tile( gameWorld, mapManager.tileRef( mapGridX, mapGridY ), toPixel( this, x, y ) );
+				if( tileGrid[ x ][ y ].tileReference == DOOR_REF ){
 					// TODO: Determine world to go to
 					// Consider changing OVERWORLD map references to Integer.parseInt( "13", 16 )
 					DoorSensorTarget sensorTarget = new DoorSensorTarget( WorldType.INSIDE, levelGridX, levelGridY );

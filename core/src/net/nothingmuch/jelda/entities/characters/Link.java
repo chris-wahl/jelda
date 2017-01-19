@@ -77,7 +77,6 @@ public class Link extends Character {
 		
 		moveVec.scl( MAX_V );
 		linkBody.setVelocity( moveVec );
-		//setB2DVelocity( moveVec );
 	}
 	
 	@Override
