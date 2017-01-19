@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import net.nothingmuch.jelda.managers.AssetManager;
-import net.nothingmuch.jelda.utilities.b2d.BodyBuilder;
 import net.nothingmuch.jelda.utilities.interfaces.Spawnable;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
@@ -20,28 +20,44 @@ public class Link extends Character {
 	/* Movement Variables */
 	private HashMap<Direction, Boolean> movement = new HashMap<Direction, Boolean>();
 	private Vector2 moveVec = new Vector2( 0, 0 );
-	private final float MAX_V = 2f;
+	private final float MAX_V = 5f;
+	
+	/* Physics world placeholders */
+	LinkBody linkBody;
+	Body footBox;
 	
 	/* Methods */
-	public Link( GameWorld gameWorld, float pixelCenterX, float pixelCenterY ){
-		super( gameWorld, pixelCenterX, pixelCenterY );
+	public Link(){
 		for( Direction d : Direction.values() ){
 			movement.put( d, false );
 		}
 	}
 	
-	public Link( GameWorld gameWorld, Vector2 pixelPosition ){
-		this( gameWorld, pixelPosition.x, pixelPosition.y );
-	}
-	
-	public Link( GameWorld gameworld, Spawnable spawnTarget ){
-		this( gameworld, spawnTarget.getSpawnPoint() );
-	}
-	
 	protected void createBody(){
-		characterBody = BodyBuilder.createRect( gameWorld.getWorld(), lastPosition.x, lastPosition.y, 16, 16, false, true,
-				BIT_LINK, (short) ( BIT_TERRAIN | BIT_ENEMY | BIT_ITEM | BIT_SENSOR ), BIT_LINK );
-		characterBody.getFixtureList().get( 0 ).setUserData( this );
+		
+	}
+	
+	public void setInGameWorld( GameWorld gameWorld ){
+		this.gameWorld = gameWorld;
+		this.linkBody = this.gameWorld.getLinkBody();
+		
+		if( !linkBody.isInit ) linkBody.createHitBox();
+		
+		this.characterBody = linkBody.hitBox;
+		this.footBox = linkBody.footBox;
+	}
+	
+	public void setInGameWorld( GameWorld gameWorld, Spawnable spawnPoint ){
+		setInGameWorld( gameWorld );
+		setPosition( spawnPoint );
+	}
+	public void setInGameWorld( GameWorld gameWorld, Vector2 position ){
+		setInGameWorld( gameWorld );
+		setPosition( position );
+	}
+	public void setInGameWorld( GameWorld gameWorld, float pixelX, float pixelY ){
+		setInGameWorld( gameWorld );
+		setPosition( pixelX, pixelY );
 	}
 	
 	@Override
@@ -60,7 +76,8 @@ public class Link extends Character {
 		if( movement.get( Direction.DOWN )) moveVec.y--;
 		
 		moveVec.scl( MAX_V );
-		setB2DVelocity( moveVec );
+		linkBody.setVelocity( moveVec );
+		//setB2DVelocity( moveVec );
 	}
 	
 	@Override
@@ -96,5 +113,11 @@ public class Link extends Character {
 	public Vector2 getShieldCenter() {
 		// TODO: Establish pixelspace shield center
 		return new Vector2( 0, 0 );
+	}
+	
+	@Override
+	public void setB2DPosition( float x, float y ) {
+		super.setB2DPosition( x, y );
+		footBox.setTransform( x, y - H_LINK / 4f / PPM, 0 );
 	}
 }

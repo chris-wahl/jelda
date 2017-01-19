@@ -13,6 +13,8 @@ import static net.nothingmuch.jelda.utilities.Constants.TILE_SIZE;
  */
 public class MapManager {
 	
+	public static final int DOOR_REF = Integer.parseInt( "12", 16 );
+	public static final int BLANK_TILE_REF = Integer.parseInt( "18", 16 );
 	private static HashMap<Integer, TextureRegion> tileTextures;
 	private static Texture TILE_TEXTURE;
 	private static int[][] MAP_GRID;
@@ -30,6 +32,8 @@ public class MapManager {
 			}
 			n+=2;
 		}
+		
+		tileTextures.put( DOOR_REF, tileTextures.get( BLANK_TILE_REF ) );
 		
 		/* Turn the file into a grid */
 		String MAP_FILE = Gdx.files.internal( "levels/overworld/owtileblocks.lvl" ).readString();
@@ -56,7 +60,6 @@ public class MapManager {
 		/*
 		*
 		* */
-		if( tileRef == Integer.parseInt( "12", 16 ) ) tileRef = Integer.parseInt( "18", 16 );
 		return tileTextures.get( tileRef );
 	}
 	

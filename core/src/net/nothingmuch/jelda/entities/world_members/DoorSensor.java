@@ -1,5 +1,6 @@
 package net.nothingmuch.jelda.entities.world_members;
 
+import com.badlogic.gdx.Gdx;
 import net.nothingmuch.jelda.utilities.b2d.BodyBuilder;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
@@ -29,13 +30,14 @@ public class DoorSensor extends Sensor {
 	
 	@Override
 	protected void makeSensorBody() {
-		sensorBody = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, tile.pixelPosition.x, tile.pixelPosition.y, TILE_SIZE, TILE_SIZE / 4f, BIT_LINK_FFET, GINDEX_SENSOR );
+		sensorBody = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, tile.pixelPosition.x, tile.pixelPosition.y, TILE_SIZE, TILE_SIZE / 4f, BIT_LINK_FEET, GINDEX_SENSOR );
 	}
 	
 	@Override
 	public void trigger() {
 		if( isActive ){
-			gameWorld.exitWorld( sensorTarget );
+			Gdx.app.log( tile.pixelPosition + "", "DoorSensor triggered" );
+			//gameWorld.exitWorld( sensorTarget );
 			deactivate();
 		}
 	}
@@ -46,7 +48,7 @@ public class DoorSensor extends Sensor {
 	}
 
 	
-	public class DoorSensorTarget {
+	public static class DoorSensorTarget {
 		public final WorldType targetWorldType;
 		public final int targetLevelX, targetLevelY;
 		

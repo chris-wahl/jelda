@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import net.nothingmuch.jelda.entities.characters.Link;
+import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.managers.MapManager;
 import net.nothingmuch.jelda.utilities.b2d.BodyBuilder;
 import net.nothingmuch.jelda.utilities.interfaces.Drawable;
@@ -44,6 +45,13 @@ public class Level implements Targetable, Drawable, Spawnable {
 				int mapGridX = levelGridX * W_LEVEL + x;
 				int mapGridY = levelGridY * H_LEVEL + y;
 				tileGrid[ x ][ y ] = new Tile( gameWorld, MapManager.tileRef( mapGridX, mapGridY ), toPixel( this, x, y ) );
+				if( tileGrid[ x ][ y ].tileReference == MapManager.DOOR_REF ){
+					// TODO: Determine world to go to
+					// Consider changing OVERWORLD map references to Integer.parseInt( "13", 16 )
+					DoorSensorTarget sensorTarget = new DoorSensorTarget( WorldType.INSIDE, levelGridX, levelGridY );
+					DoorSensor doorSensor = new DoorSensor( gameWorld, sensorTarget, tileGrid[ x ][ y ] );
+					tileGrid[ x ][ y ].setSensor( doorSensor );
+				}
 				
 			}
 		}
@@ -179,5 +187,13 @@ public class Level implements Targetable, Drawable, Spawnable {
 		return Math.max( Math.abs( levelGridX - toLevelGridX( link.getPosition().x ) ),
 					     Math.abs( levelGridY - toLevelGridY( link.getPosition().y ) )) ;
 		
+	}
+	
+	public int getLevelGridX(){
+		return levelGridX;
+	}
+	
+	public int getLevelGridY(){
+		return levelGridY;
 	}
 }

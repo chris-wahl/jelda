@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import net.nothingmuch.jelda.entities.characters.Link;
+import net.nothingmuch.jelda.entities.characters.LinkBody;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
 import net.nothingmuch.jelda.managers.WorldContactListener;
@@ -14,7 +15,6 @@ import net.nothingmuch.jelda.screens.GameScreen;
 
 import java.util.Iterator;
 
-import static net.nothingmuch.jelda.utilities.Constants.W_LEVEL_TILE;
 import static net.nothingmuch.jelda.utilities.Constants.WorldType;
 
 
@@ -32,12 +32,16 @@ public abstract class GameWorld {
 	protected Array<Level> loadedLevels = new Array<Level>();
 	
 	protected GameScreen gameScreen;
-	protected Link link;
-	protected float PIXEL_DRAW_LIMIT = W_LEVEL_TILE;
+	protected float PIXEL_DRAW_LIMIT = 150f;//W_LEVEL_TILE;
 	
-	protected GameWorld( GameScreen gameScreen, WorldType worldType ){
+	protected LinkBody linkBody;
+	protected Link link;
+	
+	protected GameWorld( GameScreen gameScreen, WorldType worldType, Link link ){
 		this.worldType = worldType;
 		this.gameScreen = gameScreen;
+		this.link = link;
+		
 		this.world = new World( new Vector2( 0, 0 ), false );
 		this.world.setContactListener( new WorldContactListener( this ) );
 		this.rayHandler = new RayHandler( world );
@@ -46,9 +50,7 @@ public abstract class GameWorld {
 		rayHandler.setAmbientLight( lvl / 255f );
 		initGrid();
 		
-		this.link = new Link( this, levelGrid[ 0 ][ 0 ] );
-		levelGrid[ 0 ][ 0 ].load();
-				
+		linkBody = new LinkBody( this );
 	}
 	
 	protected void initGrid(){
@@ -64,8 +66,9 @@ public abstract class GameWorld {
 	public void destroy( Body body ){
 		toBeDestoryed.add( body );
 	}
-	private void destroyBodies(){
-		for( Body b : toBeDestoryed ){
+	
+	private void destroyBodies() {
+		for( Body b : toBeDestoryed ) {
 			world.destroyBody( b );
 		}
 		toBeDestoryed.clear();
@@ -90,7 +93,13 @@ public abstract class GameWorld {
 	
 	public abstract void doUpdate( float delta );
 	public abstract void doDraw( SpriteBatch spriteBatch, float runTime );
-	public abstract void enterWorld( DoorSensorTarget sensorTarget );
+	
+	public void enterWorld( int levelGridX, int levelGridY ) {
+	
+		this.link.setInGameWorld( this );
+		setLevel( levelGridX, levelGridY );
+	}
+	
 	public abstract void exitWorld( DoorSensorTarget sensorTarget);
 	
 	public void addLoadedLevel( Level level ){
@@ -113,6 +122,7 @@ public abstract class GameWorld {
 	}
 	protected void setLevel( int levelGridX, int levelGridY ){
 		link.setPosition( levelGrid[ levelGridX ][ levelGridY ] );
+		addLoadedLevel( levelGrid[ levelGridX ][ levelGridY ] );
 	}
 	
 	public Link getLink() {
@@ -131,5 +141,13 @@ public abstract class GameWorld {
 	public void dispose(){
 		world.dispose();
 		rayHandler.dispose();
+	}
+	
+	public WorldType getWorldType() {
+		return worldType;
+	}
+	
+	public LinkBody getLinkBody() {
+		return linkBody;
 	}
 }

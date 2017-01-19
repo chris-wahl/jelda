@@ -20,6 +20,6 @@ public class InsideDoorSensor extends DoorSensor {
 	
 	@Override
 	protected void makeSensorBody() {
-		sensorBody = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, tile.pixelPosition.x + TILE_SIZE / 2f, tile.pixelPosition.y, TILE_SIZE, TILE_SIZE / 4f, BIT_LINK_FFET, GINDEX_SENSOR );
+		sensorBody = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, tile.pixelPosition.x + TILE_SIZE / 2f, tile.pixelPosition.y, TILE_SIZE, TILE_SIZE / 4f, BIT_LINK_FEET, GINDEX_SENSOR );
 	}
 }

@@ -20,11 +20,14 @@ public class Constants {
 	public static final short BIT_NOCOLLISION = - 1,
 			BIT_LINK = 1,
 			BIT_TERRAIN = 1,
-			BIT_LINK_FFET = 2,
+			BIT_LINK_FEET = 2,
 			BIT_ITEM = 4,
 			BIT_ENEMY = 8,
 			BIT_SENSOR = 16;
-	public static final short GINDEX_SENSOR = 0;
+	public static final short GINDEX_SENSOR = 0,
+							  GINDEX_LINK = 0,
+							  GINDEX_LINK_FEET = 1,
+							  GINDEX_TERRAIN = 1;
 	
 	/* GRAPHICS CONSTANTS */
 	public final static int WINDOW_WIDTH = 1600,
@@ -32,6 +35,8 @@ public class Constants {
 	private final static float ASPECT_RATIO = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
 	public final static int WORLD_WIDTH = 480,
 			WORLD_HEIGHT = (int) ( WORLD_WIDTH / ASPECT_RATIO );
+	
+	public final static int H_LINK = 16, W_LINK = 16;
 	
 	public enum CameraStyle {
 		LERP_TO_TARGET,
@@ -48,6 +53,7 @@ public class Constants {
 	
 	public enum WorldType {
 		OVERWORLD( 16, 8 ),
+		INSIDE( 16, 8 ),
 		DUNGEON_0( 0, 0 );
 		
 		public final int N_X, N_Y;

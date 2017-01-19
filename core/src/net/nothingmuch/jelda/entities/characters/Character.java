@@ -30,11 +30,6 @@ public abstract class Character implements Drawable, Targetable {
 	protected boolean isMoving;
 	
 	/* Methods */
-	public Character( GameWorld gameWorld, float pixelCenterX, float pixelCenterY ){
-		this.gameWorld = gameWorld;
-		this.lastPosition = new Vector2( pixelCenterX, pixelCenterY );
-		createBody();
-	}
 	
 	public void update( float delta ){
 		isMoving = getPosition().equals( lastPosition );

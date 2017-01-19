@@ -1,16 +1,11 @@
 package net.nothingmuch.jelda.managers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.*;
 import net.nothingmuch.jelda.entities.characters.Link;
+import net.nothingmuch.jelda.entities.world_members.DoorSensor;
 import net.nothingmuch.jelda.entities.world_members.Level;
 import net.nothingmuch.jelda.worlds.GameWorld;
-
-import static net.nothingmuch.jelda.utilities.Constants.H_LEVEL_TILE;
-import static net.nothingmuch.jelda.utilities.Constants.W_LEVEL_TILE;
 
 /**
  * Contact listener for a GameWorld
@@ -31,9 +26,9 @@ public class WorldContactListener implements ContactListener {
 			Object otherObject = pair.otherObject;
 			
 			if( otherObject instanceof Level ){
-				float x = ( (Level) otherObject ).getPosition().x / W_LEVEL_TILE;
-				float y = ( (Level) otherObject ).getPosition().y / H_LEVEL_TILE;
-				Gdx.app.log( "Level Contact", x + ", " + y );
+				Gdx.app.log( "Level Contact", ( (Level) otherObject ).getLevelGridX() + ", " + ( (Level) otherObject ).getLevelGridY() );
+			} else if ( otherObject instanceof DoorSensor ){
+				( ( DoorSensor ) otherObject ).trigger();
 			}
 		}
 	}
@@ -54,6 +49,8 @@ public class WorldContactListener implements ContactListener {
 	}
 	
 	private boolean isPlayer( Contact contact ){
+		Fixture A = contact.getFixtureA();
+		Fixture B = contact.getFixtureB();
 		return ( contact.getFixtureA().getUserData() instanceof Link || contact.getFixtureB().getUserData() instanceof Link );
 	}
 	

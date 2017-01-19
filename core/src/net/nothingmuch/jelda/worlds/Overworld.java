@@ -1,28 +1,36 @@
 package net.nothingmuch.jelda.worlds;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
 import net.nothingmuch.jelda.managers.MapManager;
 import net.nothingmuch.jelda.screens.GameScreen;
-import net.nothingmuch.jelda.utilities.Constants;
+
+import static net.nothingmuch.jelda.utilities.Constants.CameraStyle;
+import static net.nothingmuch.jelda.utilities.Constants.WorldType;
 
 /**
- * Created by christopher on 1/16/17.
+ * Overworld-specific handler class
  */
-public class SANDBOX extends GameWorld {
+public class Overworld extends GameWorld {
 	
-	public SANDBOX( GameScreen gameScreen, Constants.WorldType worldType ) {
-		super( gameScreen, worldType );
+	public Overworld( GameScreen gameScreen, Link link ) {
+		super( gameScreen, WorldType.OVERWORLD, link );
 
-		gameScreen.getCameraManager().setTargetA( link );
-		gameScreen.getCameraManager().setCameraStyle( Constants.CameraStyle.LERP_TO_TARGET_ZOOM );
+		gameScreen.getCameraManager().setTargetA( this.link );
+		gameScreen.getCameraManager().setCameraStyle( CameraStyle.LERP_TO_TARGET_ZOOM );
 		MapManager.load();
+	}
+	
+	public Overworld( GameScreen gameScreen, Link link, boolean setInWorld ) {
+		this( gameScreen, link );
+		
+		if( setInWorld ) link.setInGameWorld( this, levelGrid[ 7 ][ 0 ] );
 	}
 	
 	@Override
 	public void doUpdate( float delta ) {
-		world.step( 1 / 60f, 6, 2 );
 		link.update( delta );
 		loadLevels();
 	}
@@ -44,19 +52,7 @@ public class SANDBOX extends GameWorld {
 	
 	@Override
 	public void doDraw( SpriteBatch spriteBatch, float runTime ) {
-		
-		/*for( Level[] row : levelGrid ) {
-			for( Level level : row ) {
-				level.draw( spriteBatch, runTime );
-			}
-		}*/
 		link.draw( spriteBatch, runTime );
-	}
-	
-	
-	@Override
-	public void enterWorld( DoorSensorTarget sensorTarget ) {
-		
 	}
 	
 	@Override
