@@ -57,4 +57,8 @@ public class WorldScreen extends GameScreen {
 		spriteBatch.dispose();
 		
 	}
+	
+	public GameWorldManager getWorldManager() {
+		return gameWorldManager;
+	}
 }

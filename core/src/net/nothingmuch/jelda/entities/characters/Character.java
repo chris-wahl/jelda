@@ -92,4 +92,6 @@ public abstract class Character implements Drawable, Targetable {
 	public void setB2DVelocity( float x, float y ){
 		characterBody.setLinearVelocity( x, y );
 	}
+	
+	
 }

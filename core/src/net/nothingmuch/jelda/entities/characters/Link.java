@@ -10,6 +10,8 @@ import net.nothingmuch.jelda.utilities.interfaces.Spawnable;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static net.nothingmuch.jelda.utilities.Constants.*;
 
@@ -25,6 +27,9 @@ public class Link extends Character {
 	/* Physics world placeholders */
 	LinkBody linkBody;
 	Body footBox;
+	
+	/* Animations */
+	boolean inExitAnim = false;
 	
 	/* Methods */
 	public Link(){
@@ -81,6 +86,7 @@ public class Link extends Character {
 	
 	@Override
 	public void draw( SpriteBatch spriteBatch, float runTime ) {
+		
 		lastFrame = new Sprite( AssetManager.LINK_WALK_ANIMATIONS.get( Direction.DOWN ).getKeyFrame( runTime ) );
 		lastFrame.setCenter( getPosition().x, getPosition().y );
 		lastFrame.draw( spriteBatch );
@@ -118,5 +124,25 @@ public class Link extends Character {
 	public void setB2DPosition( float x, float y ) {
 		super.setB2DPosition( x, y );
 		footBox.setTransform( x, y - H_LINK / 4f / PPM, 0 );
+	}
+	
+	public void doExitAnimation() {
+		inExitAnim = true;
+		
+		/* Testing Code */
+		new Timer().schedule( new TimerTask() {
+			@Override
+			public void run() {
+				resetExitAnimation();
+			}
+		}, 3000 );
+	}
+	
+	public void resetExitAnimation(){
+		inExitAnim = false;
+	}
+	
+	public boolean inExitAnimation() {
+		return inExitAnim;
 	}
 }

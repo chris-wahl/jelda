@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.screens.GameScreen;
+import net.nothingmuch.jelda.screens.WorldScreen;
 import net.nothingmuch.jelda.worlds.GameWorld;
 import net.nothingmuch.jelda.worlds.InsideWorld;
 import net.nothingmuch.jelda.worlds.Overworld;
@@ -29,19 +30,20 @@ public class GameWorldManager {
 	private Box2DDebugRenderer debugRenderer;
 	private GameScreen gameScreen;
 	
-	public GameWorldManager( GameScreen gameScreen ) {
-		this.gameScreen = gameScreen;
+	public GameWorldManager( WorldScreen worldScreen ) {
+		this.gameScreen = worldScreen;
 		Gdx.input.setInputProcessor( new WorldInputManager( this ) );
 		
 		debugRenderer = new Box2DDebugRenderer();
 		
 		link = new Link();
 		
-		overWorld = new Overworld( gameScreen, link, true );
-		insideWorld = new InsideWorld( gameScreen, link );
-		currentWorld = overWorld;
-		
-		link.setInGameWorld( currentWorld );
+		overWorld = new Overworld( worldScreen, link );
+		insideWorld = new InsideWorld( worldScreen, link );
+		currentWorld = insideWorld;
+		currentWorld.enterWorld( 0, 0 );
+		//currentWorld.linkInWorld = true;
+		//link.setInGameWorld( currentWorld );
 	}
 	
 	public void update( float delta ){

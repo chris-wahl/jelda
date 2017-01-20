@@ -40,7 +40,14 @@ public class Level implements Targetable, Drawable, Spawnable {
 		float levelX = levelGridX * W_LEVEL_TILE + W_LEVEL_TILE / 2f;
 		float levelY = levelGridY * H_LEVEL_TILE + H_LEVEL_TILE / 2f;
 		this.levelCenter = BodyBuilder.createSensorRect( gameWorld.getWorld(), this, levelX, levelY, 2f, 2f, BIT_NOCOLLISION, BIT_SENSOR );
-				
+		
+		if( gameWorld.getWorldType() == WorldType.OVERWORLD ){
+			loadOverworldLevel();
+		}
+		
+	}
+	
+	private void loadOverworldLevel(){
 		tileGrid = new Tile[ W_LEVEL ][ H_LEVEL ];
 		for( int x = 0; x < W_LEVEL; x++ ){
 			for( int y = 0; y < H_LEVEL; y++ ){

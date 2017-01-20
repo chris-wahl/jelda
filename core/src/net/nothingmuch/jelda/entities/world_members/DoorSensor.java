@@ -37,7 +37,7 @@ public class DoorSensor extends Sensor {
 	public void trigger() {
 		if( isActive ){
 			Gdx.app.log( tile.pixelPosition + "", "DoorSensor triggered" );
-			//gameWorld.exitWorld( sensorTarget );
+			gameWorld.setExitWorld( sensorTarget, tile.pixelPosition.cpy() );
 			deactivate();
 		}
 	}

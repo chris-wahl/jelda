@@ -10,12 +10,15 @@ import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.characters.LinkBody;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
+import net.nothingmuch.jelda.managers.GameWorldManager;
 import net.nothingmuch.jelda.managers.MapManager;
 import net.nothingmuch.jelda.managers.WorldContactListener;
 import net.nothingmuch.jelda.screens.GameScreen;
+import net.nothingmuch.jelda.screens.WorldScreen;
 
 import java.util.Iterator;
 
+import static net.nothingmuch.jelda.utilities.Constants.W_LEVEL_TILE;
 import static net.nothingmuch.jelda.utilities.Constants.WorldType;
 
 
@@ -34,15 +37,20 @@ public abstract class GameWorld {
 	protected Array<Level> loadedLevels = new Array<Level>();
 	
 	protected GameScreen gameScreen;
-	protected float PIXEL_DRAW_LIMIT = 150f;//W_LEVEL_TILE;
+	protected GameWorldManager worldManager;
+	protected float PIXEL_DRAW_LIMIT = W_LEVEL_TILE;
 	
 	protected LinkBody linkBody;
 	protected Link link;
+	public boolean linkInWorld;
+
 	
-	protected GameWorld( GameScreen gameScreen, WorldType worldType, Link link ){
+	protected GameWorld( WorldScreen worldScreen, WorldType worldType, Link link ){
 		this.worldType = worldType;
-		this.gameScreen = gameScreen;
+		this.gameScreen = worldScreen;
+		this.worldManager = worldScreen.getWorldManager();
 		this.link = link;
+		this.linkInWorld = false;
 		
 		this.mapManager = new MapManager( worldType );
 		
@@ -79,7 +87,7 @@ public abstract class GameWorld {
 	}
 	
 	public void update( float delta ){
-		world.step( 1 / 60f, 6, 2 );
+		if( linkInWorld ) world.step( 1 / 60f, 6, 2 );
 		doUpdate( delta );
 		postupdate();
 	}
@@ -102,10 +110,13 @@ public abstract class GameWorld {
 	public void enterWorld( int levelGridX, int levelGridY ) {
 	
 		this.link.setInGameWorld( this );
+		System.out.println( levelGrid.length );
 		setLevel( levelGridX, levelGridY );
+		linkInWorld = true;
 	}
 	
-	public abstract void exitWorld( DoorSensorTarget sensorTarget);
+	public abstract void setExitWorld( DoorSensorTarget sensorTarget, Vector2 position );
+	public abstract void exitWorld();
 	
 	public void addLoadedLevel( Level level ){
 		loadedLevels.add( level );

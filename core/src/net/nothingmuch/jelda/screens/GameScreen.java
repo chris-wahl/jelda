@@ -43,4 +43,5 @@ public abstract class GameScreen implements Screen {
 	public Matrix4 getCameraCombined(){
 		return cameraManager.getCamera().combined.cpy();
 	}
+	
 }

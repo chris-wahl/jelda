@@ -1,10 +1,11 @@
 package net.nothingmuch.jelda.worlds;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
-import net.nothingmuch.jelda.screens.GameScreen;
+import net.nothingmuch.jelda.screens.WorldScreen;
 
 import static net.nothingmuch.jelda.utilities.Constants.CameraStyle;
 import static net.nothingmuch.jelda.utilities.Constants.WorldType;
@@ -14,23 +15,41 @@ import static net.nothingmuch.jelda.utilities.Constants.WorldType;
  */
 public class Overworld extends GameWorld {
 	
-	public Overworld( GameScreen gameScreen, Link link ) {
-		super( gameScreen, WorldType.OVERWORLD, link );
+	private boolean worldChange = false;
+	protected DoorSensorTarget exitTarget;
+	protected Vector2 exitPosition = new Vector2();
+	
+	public Overworld( WorldScreen worldScreen, Link link ) {
+		super( worldScreen, WorldType.OVERWORLD, link );
 
-		gameScreen.getCameraManager().setTargetA( this.link );
-		gameScreen.getCameraManager().setCameraStyle( CameraStyle.LERP_TO_TARGET_ZOOM );
+		worldScreen.getCameraManager().setTargetA( this.link );
+		worldScreen.getCameraManager().setCameraStyle( CameraStyle.LERP_TO_TARGET_ZOOM );
 	}
 	
-	public Overworld( GameScreen gameScreen, Link link, boolean setInWorld ) {
-		this( gameScreen, link );
+	public Overworld( WorldScreen worldScreen, Link link, boolean setInWorld ) {
+		this( worldScreen, link );
 		
 		if( setInWorld ) link.setInGameWorld( this, levelGrid[ 7 ][ 0 ] );
+		linkInWorld = setInWorld;
 	}
 	
 	@Override
 	public void doUpdate( float delta ) {
 		link.update( delta );
 		loadLevels();
+		exitCheck();
+	}
+	
+	private void exitCheck() {
+		if( !worldChange ) return;
+		if( linkInWorld ) {
+			link.setPosition( exitPosition );
+			world.step( 0, 0, 0 );
+			linkInWorld = false;
+		}
+		if( link.inExitAnimation() ) return;
+		link.resetExitAnimation();
+		exitWorld();
 	}
 	
 	public void loadLevels(){
@@ -54,7 +73,18 @@ public class Overworld extends GameWorld {
 	}
 	
 	@Override
-	public void exitWorld( DoorSensorTarget sensorTarget ) {
+	public void setExitWorld( DoorSensorTarget sensorTarget, Vector2 position ) {
+		link.doExitAnimation();
+		exitPosition.set( position );
+		exitTarget = sensorTarget;
+		worldChange = true;
 		
+	}
+	
+	@Override
+	public void exitWorld() {
+		link.resetExitAnimation();
+		worldChange = false;
+		worldManager.changeWorld( exitTarget );
 	}
 }

@@ -1,10 +1,11 @@
 package net.nothingmuch.jelda.worlds;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import net.nothingmuch.jelda.entities.characters.Link;
-import net.nothingmuch.jelda.entities.world_members.DoorSensor;
+import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.InsideLevel;
-import net.nothingmuch.jelda.screens.GameScreen;
+import net.nothingmuch.jelda.screens.WorldScreen;
 import net.nothingmuch.jelda.utilities.Constants;
 
 /**
@@ -13,10 +14,9 @@ import net.nothingmuch.jelda.utilities.Constants;
 public class InsideWorld extends GameWorld {
 	
 	
-	protected InsideLevel[][] levelGrid;
-	
-	public InsideWorld( GameScreen gameScreen, Link link ) {
-		super( gameScreen, Constants.WorldType.INSIDE, link );
+	public InsideWorld( WorldScreen worldScreen, Link link ) {
+		super( worldScreen, Constants.WorldType.INSIDE, link );
+		levelGrid[ 0 ][ 0 ].load();
 	}
 	
 	@Override
@@ -28,6 +28,8 @@ public class InsideWorld extends GameWorld {
 				levelGrid[ levelGridX ][ levelGridY ] = new InsideLevel( this, levelGridX, levelGridY );
 			}
 		}
+		
+		// TODO: Set InsideDoorSensors for exiting back to Overworld
 	}
 	
 	@Override
@@ -41,7 +43,13 @@ public class InsideWorld extends GameWorld {
 	}
 	
 	@Override
-	public void exitWorld( DoorSensor.DoorSensorTarget sensorTarget ) {
+	public void setExitWorld( DoorSensorTarget sensorTarget, Vector2 tilePosition ) {
+		
+		
+	}
+	
+	@Override
+	public void exitWorld() {
 		
 	}
 }
