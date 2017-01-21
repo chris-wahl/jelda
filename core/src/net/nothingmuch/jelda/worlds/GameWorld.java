@@ -29,23 +29,23 @@ public abstract class GameWorld {
 	
 	protected final WorldType worldType;
 	protected final MapManager mapManager;
+	public boolean linkInWorld;
 	protected World world;
 	protected Array<Body> toBeDestoryed = new Array<Body>();
 	protected RayHandler rayHandler;
-	
 	protected Level[][] levelGrid;
 	protected Array<Level> loadedLevels = new Array<Level>();
-	
 	protected GameScreen gameScreen;
 	protected GameWorldManager worldManager;
 	protected float PIXEL_DRAW_LIMIT = W_LEVEL_TILE;
-	
 	protected LinkBody linkBody;
 	protected Link link;
-	public boolean linkInWorld;
-
+	protected DoorSensorTarget exitTarget;
+	protected Vector2 exitPosition = new Vector2();
+	protected boolean worldChange = false;
 	
-	protected GameWorld( WorldScreen worldScreen, GameWorldManager worldManager, WorldType worldType, Link link ){
+	
+	protected GameWorld( WorldScreen worldScreen, GameWorldManager worldManager, WorldType worldType, Link link ) {
 		this.worldType = worldType;
 		this.gameScreen = worldScreen;
 		this.worldManager = worldManager;
@@ -65,17 +65,17 @@ public abstract class GameWorld {
 		linkBody = new LinkBody( this );
 	}
 	
-	protected void initGrid(){
+	protected void initGrid() {
 		levelGrid = new Level[ worldType.N_X ][ worldType.N_Y ];
 		
-		for( int levelGridY = 0; levelGridY < worldType.N_Y; levelGridY++ ){
-			for( int levelGridX = 0; levelGridX < worldType.N_X; levelGridX++ ){
+		for( int levelGridY = 0; levelGridY < worldType.N_Y; levelGridY++ ) {
+			for( int levelGridX = 0; levelGridX < worldType.N_X; levelGridX++ ) {
 				levelGrid[ levelGridX ][ levelGridY ] = new Level( this, levelGridX, levelGridY );
 			}
 		}
 	}
 	
-	public void destroy( Body body ){
+	public void destroy( Body body ) {
 		toBeDestoryed.add( body );
 	}
 	
@@ -86,49 +86,54 @@ public abstract class GameWorld {
 		toBeDestoryed.clear();
 	}
 	
-	public void update( float delta ){
+	public void update( float delta ) {
 		if( linkInWorld ) world.step( 1 / 60f, 6, 2 );
 		doUpdate( delta );
 		postupdate();
 	}
-	public void postupdate(){
+	
+	public void postupdate() {
 		checkLoadedLevels();
 		destroyBodies();
 		rayHandler.update();
 	}
 	
 	public void draw( SpriteBatch spriteBatch, float runTime ) {
-		for( Level level : loadedLevels ){
+		for( Level level : loadedLevels ) {
 			level.draw( spriteBatch, runTime );
 		}
 		doDraw( spriteBatch, runTime );
 	}
 	
 	public abstract void doUpdate( float delta );
+	
 	public abstract void doDraw( SpriteBatch spriteBatch, float runTime );
 	
 	public void enterWorld( int levelGridX, int levelGridY ) {
-	
 		this.link.setInGameWorld( this );
 		System.out.println( levelGrid.length );
 		setLevel( levelGridX, levelGridY );
 		linkInWorld = true;
 	}
 	
+	public abstract void enterWorld( int levelGridX, int levelGridY, boolean useLastPos );
+	
 	public abstract void setExitWorld( DoorSensorTarget sensorTarget, Vector2 position );
+	
 	public abstract void exitWorld();
 	
-	public void addLoadedLevel( Level level ){
+	public void addLoadedLevel( Level level ) {
 		loadedLevels.add( level );
 	}
-	protected void checkLoadedLevels(){
+	
+	protected void checkLoadedLevels() {
 		Iterator<Level> levelIterator = loadedLevels.iterator();
 		Level reference;
 		while(levelIterator.hasNext()) {
 			reference = levelIterator.next();
-			if( !reference.isLoaded() ){
+			if( ! reference.isLoaded() ) {
 				levelIterator.remove();
-			} else if( reference.gridDist( link ) > 1 ){
+			} else if( reference.gridDist( link ) > 1 ) {
 				reference.unload();
 				levelIterator.remove();
 			} else {
@@ -136,7 +141,8 @@ public abstract class GameWorld {
 			}
 		}
 	}
-	protected void setLevel( int levelGridX, int levelGridY ){
+	
+	protected void setLevel( int levelGridX, int levelGridY ) {
 		link.setPosition( levelGrid[ levelGridX ][ levelGridY ] );
 		addLoadedLevel( levelGrid[ levelGridX ][ levelGridY ] );
 	}
@@ -144,17 +150,20 @@ public abstract class GameWorld {
 	public Link getLink() {
 		return link;
 	}
-	public World getWorld(){
+	
+	public World getWorld() {
 		return world;
 	}
-	public RayHandler getRayHandler(){
+	
+	public RayHandler getRayHandler() {
 		return rayHandler;
 	}
-	public void scrollWheel( float scrolled ){
+	
+	public void scrollWheel( float scrolled ) {
 		gameScreen.getCameraManager().setZoom( gameScreen.getCameraManager().getZoom() + scrolled );
 	}
 	
-	public void dispose(){
+	public void dispose() {
 		world.dispose();
 		rayHandler.dispose();
 		mapManager.dispose();

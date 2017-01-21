@@ -16,13 +16,9 @@ import static net.nothingmuch.jelda.utilities.Constants.WorldType;
  */
 public class Overworld extends GameWorld {
 	
-	private boolean worldChange = false;
-	protected DoorSensorTarget exitTarget;
-	protected Vector2 exitPosition = new Vector2();
-	
 	public Overworld( WorldScreen worldScreen, GameWorldManager worldManager, Link link ) {
 		super( worldScreen, worldManager, WorldType.OVERWORLD, link );
-
+		
 		worldScreen.getCameraManager().setTargetA( this.link );
 		worldScreen.getCameraManager().setCameraStyle( CameraStyle.LERP_TO_TARGET_ZOOM );
 	}
@@ -42,7 +38,7 @@ public class Overworld extends GameWorld {
 	}
 	
 	private void exitCheck() {
-		if( !worldChange ) return;
+		if( ! worldChange ) return;
 		if( linkInWorld ) {
 			link.setPosition( exitPosition );
 			world.step( 0, 0, 0 );
@@ -53,19 +49,24 @@ public class Overworld extends GameWorld {
 		exitWorld();
 	}
 	
-	public void loadLevels(){
+	public void loadLevels() {
 		int linkLevelX = Level.toLevelGridX( link.getPosition().x );
 		int linkLevelY = Level.toLevelGridY( link.getPosition().y );
 		
-		for( int x = -1; x < 2; x++ ){
-			for( int y = -1; y < 2; y++ ){
+		for( int x = - 1; x < 2; x++ ) {
+			for( int y = - 1; y < 2; y++ ) {
 				if( x + linkLevelX < 0 || x + linkLevelX >= worldType.N_X || y + linkLevelY < 0 || y + linkLevelY >= worldType.N_Y ) {
 					continue;
-				} else if( !levelGrid[ x + linkLevelX ][ y + linkLevelY ].isLoaded() ){
+				} else if( ! levelGrid[ x + linkLevelX ][ y + linkLevelY ].isLoaded() ) {
 					levelGrid[ x + linkLevelX ][ y + linkLevelY ].load();
 				}
 			}
 		}
+	}
+	
+	public void enterWorld( int levelGridX, int levelGridY, boolean useLastPos ) {
+		enterWorld( levelGridX, levelGridY );
+		if( useLastPos ) link.setPosition( exitPosition );
 	}
 	
 	@Override

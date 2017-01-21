@@ -12,6 +12,7 @@ public abstract class Sensor implements Triggerable {
 	protected GameWorld gameWorld;
 	protected Body sensorBody;
 	protected boolean isActive;
+	protected boolean sensorMade;
 	
 	public Sensor( GameWorld gameWorld ){
 		this.gameWorld = gameWorld;
@@ -22,6 +23,7 @@ public abstract class Sensor implements Triggerable {
 	public Sensor( GameWorld gameWorld, boolean isActive ){
 		this( gameWorld );
 		this.isActive = isActive;
+		this.sensorMade = sensorMade;
 	}
 	
 	public boolean isActive(){
@@ -30,16 +32,19 @@ public abstract class Sensor implements Triggerable {
 	
 	public void activate(){
 		isActive = true;
-		makeSensorBody();
+		if( !sensorMade ) {
+			makeSensorBody();
+			sensorMade = true;
+		}
 	}
 	
 	public void deactivate(){
 		isActive = false;
-		destroy();
 	}
 	
 	public void destroy(){
 		gameWorld.destroy( sensorBody );
+		sensorMade = false;
 	}
 	
 	protected abstract void makeSensorBody();

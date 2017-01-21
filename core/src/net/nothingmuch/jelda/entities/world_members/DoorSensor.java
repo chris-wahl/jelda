@@ -44,6 +44,7 @@ public class DoorSensor extends Sensor {
 	
 	@Override
 	public void untrigger() {
+		Gdx.app.log( tile.pixelPosition + "", "DoorSensor untriggered" );
 		activate();
 	}
 

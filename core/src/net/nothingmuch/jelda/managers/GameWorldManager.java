@@ -41,14 +41,10 @@ public class GameWorldManager {
 		overWorld = new Overworld( worldScreen, this, link, true );
 		insideWorld = new InsideWorld( worldScreen, link, this );
 		currentWorld = overWorld;
-		//currentWorld.enterWorld( 0, 0 );
 	}
 	
 	public void update( float delta ){
-		
 		currentWorld.update( delta );
-		
-		
 	}
 	
 	public void draw( SpriteBatch spriteBatch, float runTime ){
@@ -58,7 +54,6 @@ public class GameWorldManager {
 		debugRenderer.render( currentWorld.getWorld(), gameScreen.getCameraCombined().scl( PPM ) );
 		
 		currentWorld.getRayHandler().render();
-		
 	}
 	
 	public void sendMovement( Direction direction, boolean doMove ) {
@@ -66,16 +61,18 @@ public class GameWorldManager {
 	}
 	
 	public void changeWorld( DoorSensorTarget sensorTarget ){
+		boolean useLastPos = false;
 		switch( sensorTarget.targetWorldType ){
 			case OVERWORLD:
 				currentWorld = overWorld;
+				useLastPos = true;
 				break;
 			case INSIDE:
 				currentWorld = insideWorld;
 				break;
 		}
 		
-		currentWorld.enterWorld( sensorTarget.targetLevelX, sensorTarget.targetLevelY );
+		currentWorld.enterWorld( sensorTarget.targetLevelX, sensorTarget.targetLevelY, useLastPos );
 		
 	}
 	

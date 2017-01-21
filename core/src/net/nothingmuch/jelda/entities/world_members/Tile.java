@@ -53,7 +53,7 @@ public class Tile implements Drawable {
 	
 	public void unload(){
 		if( !isLoaded ) return;
-		if( hasSensor ) sensor.deactivate();
+		if( hasSensor ) sensor.destroy();
 		if( isCollidable ) gameWorld.destroy( tileBody );
 		isLoaded = false;
 	}

@@ -35,7 +35,17 @@ public class WorldContactListener implements ContactListener {
 	
 	@Override
 	public void endContact( Contact contact ) {
-		
+		if( isPlayer( contact ) ){
+			Pair pair = getObjects( contact );
+			Link link = pair.link;
+			Object otherObject = pair.otherObject;
+			
+			if( otherObject instanceof Level ){
+				Gdx.app.log( "Level Contact", ( (Level) otherObject ).getLevelGridX() + ", " + ( (Level) otherObject ).getLevelGridY() );
+			} else if ( otherObject instanceof DoorSensor ){
+				( ( DoorSensor ) otherObject ).untrigger();
+			}
+		}
 	}
 	
 	@Override

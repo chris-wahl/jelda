@@ -1,12 +1,14 @@
 package net.nothingmuch.jelda.entities.world_members;
 
+import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
+import net.nothingmuch.jelda.utilities.Constants;
 import net.nothingmuch.jelda.worlds.GameWorld;
 
 import static net.nothingmuch.jelda.utilities.Constants.H_LEVEL;
 import static net.nothingmuch.jelda.utilities.Constants.W_LEVEL;
 
 /**
- * Created by christopher on 1/18/17.
+ *
  */
 public class InsideLevel extends Level {
 	
@@ -42,5 +44,8 @@ public class InsideLevel extends Level {
 			}
 		}
 		spawnPoint = toPixel( this, 7, 0 );
+		
+		DoorSensorTarget sensorTarget = new DoorSensorTarget( Constants.WorldType.OVERWORLD, this.levelGridX, this.levelGridY );
+		tileGrid[ 7 ][ 0 ].setSensor( new InsideDoorSensor( gameWorld, sensorTarget, tileGrid[ 7 ][ 0 ] ) );
 	}
 }

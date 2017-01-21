@@ -11,7 +11,7 @@ import net.nothingmuch.jelda.screens.WorldScreen;
 import net.nothingmuch.jelda.utilities.Constants;
 
 /**
- * Created by christopher on 1/18/17.
+ *
  */
 public class InsideWorld extends GameWorld {
 	
@@ -25,8 +25,8 @@ public class InsideWorld extends GameWorld {
 	protected void initGrid() {
 		levelGrid = new InsideLevel[ worldType.N_X ][ worldType.N_Y ];
 		
-		for( int levelGridY = 0; levelGridY < worldType.N_Y; levelGridY++ ){
-			for( int levelGridX = 0; levelGridX < worldType.N_X; levelGridX++ ){
+		for( int levelGridY = 0; levelGridY < worldType.N_Y; levelGridY++ ) {
+			for( int levelGridX = 0; levelGridX < worldType.N_X; levelGridX++ ) {
 				levelGrid[ levelGridX ][ levelGridY ] = new InsideLevel( this, levelGridX, levelGridY );
 			}
 		}
@@ -41,9 +41,14 @@ public class InsideWorld extends GameWorld {
 		activeLevel.load();
 	}
 	
+	public void enterWorld( int levelGridX, int levelGridY, boolean useSpawnPoint ) {
+		enterWorld( levelGridX, levelGridY );
+	}
+	
 	@Override
 	public void doUpdate( float delta ) {
 		link.update( delta );
+		if( worldChange ) exitWorld();
 	}
 	
 	@Override
@@ -52,12 +57,17 @@ public class InsideWorld extends GameWorld {
 	}
 	
 	@Override
-	public void setExitWorld( DoorSensorTarget sensorTarget, Vector2 tilePosition ) {
-		
+	public void setExitWorld( DoorSensorTarget sensorTarget, Vector2 position ) {
+		link.doExitAnimation();
+		exitPosition.set( position );
+		exitTarget = sensorTarget;
+		worldChange = true;
 	}
 	
 	@Override
 	public void exitWorld() {
 		activeLevel.unload();
+		worldChange = false;
+		worldManager.changeWorld( exitTarget );
 	}
 }
