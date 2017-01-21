@@ -38,12 +38,10 @@ public class GameWorldManager {
 		
 		link = new Link();
 		
-		overWorld = new Overworld( worldScreen, link );
-		insideWorld = new InsideWorld( worldScreen, link );
-		currentWorld = insideWorld;
-		currentWorld.enterWorld( 0, 0 );
-		//currentWorld.linkInWorld = true;
-		//link.setInGameWorld( currentWorld );
+		overWorld = new Overworld( worldScreen, this, link, true );
+		insideWorld = new InsideWorld( worldScreen, link, this );
+		currentWorld = overWorld;
+		//currentWorld.enterWorld( 0, 0 );
 	}
 	
 	public void update( float delta ){
@@ -71,6 +69,9 @@ public class GameWorldManager {
 		switch( sensorTarget.targetWorldType ){
 			case OVERWORLD:
 				currentWorld = overWorld;
+				break;
+			case INSIDE:
+				currentWorld = insideWorld;
 				break;
 		}
 		

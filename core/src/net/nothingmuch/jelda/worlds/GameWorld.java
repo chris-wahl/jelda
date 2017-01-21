@@ -45,10 +45,10 @@ public abstract class GameWorld {
 	public boolean linkInWorld;
 
 	
-	protected GameWorld( WorldScreen worldScreen, WorldType worldType, Link link ){
+	protected GameWorld( WorldScreen worldScreen, GameWorldManager worldManager, WorldType worldType, Link link ){
 		this.worldType = worldType;
 		this.gameScreen = worldScreen;
-		this.worldManager = worldScreen.getWorldManager();
+		this.worldManager = worldManager;
 		this.link = link;
 		this.linkInWorld = false;
 		

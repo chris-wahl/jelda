@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
+import net.nothingmuch.jelda.managers.GameWorldManager;
 import net.nothingmuch.jelda.screens.WorldScreen;
 
 import static net.nothingmuch.jelda.utilities.Constants.CameraStyle;
@@ -19,18 +20,18 @@ public class Overworld extends GameWorld {
 	protected DoorSensorTarget exitTarget;
 	protected Vector2 exitPosition = new Vector2();
 	
-	public Overworld( WorldScreen worldScreen, Link link ) {
-		super( worldScreen, WorldType.OVERWORLD, link );
+	public Overworld( WorldScreen worldScreen, GameWorldManager worldManager, Link link ) {
+		super( worldScreen, worldManager, WorldType.OVERWORLD, link );
 
 		worldScreen.getCameraManager().setTargetA( this.link );
 		worldScreen.getCameraManager().setCameraStyle( CameraStyle.LERP_TO_TARGET_ZOOM );
 	}
 	
-	public Overworld( WorldScreen worldScreen, Link link, boolean setInWorld ) {
-		this( worldScreen, link );
+	public Overworld( WorldScreen worldScreen, GameWorldManager worldManager, Link link, boolean startInWorld ) {
+		this( worldScreen, worldManager, link );
 		
-		if( setInWorld ) link.setInGameWorld( this, levelGrid[ 7 ][ 0 ] );
-		linkInWorld = setInWorld;
+		if( startInWorld ) link.setInGameWorld( this, levelGrid[ 7 ][ 0 ] );
+		linkInWorld = startInWorld;
 	}
 	
 	@Override
