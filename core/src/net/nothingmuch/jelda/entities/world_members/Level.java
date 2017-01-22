@@ -83,7 +83,6 @@ public class Level implements Targetable, Drawable, Spawnable {
 		}
 		isLoaded = load;
 	}
-	
 	public void load_in_limit( Vector2 position, final float MAX_PIXEL_X, final float MAX_PIXEL_Y ){
 		for( Tile[] tileRow : tileGrid ){
 			for( Tile t : tileRow ) {
@@ -95,7 +94,6 @@ public class Level implements Targetable, Drawable, Spawnable {
 			}
 		}
 	}
-	
 	public void load_in_limit( Vector2 position, final float MAX_PIXEL_RADIUS ) {
 		for( Tile[] tileRow : tileGrid ){
 			for( Tile t : tileRow ) {
@@ -106,6 +104,44 @@ public class Level implements Targetable, Drawable, Spawnable {
 				}
 			}
 		}
+	}
+	
+	public void setLevelSensors(){
+		int width = 0;
+		if( levelGridY < gameWorld.getWorldType().N_Y - 2 ) {
+			for( int x = 0; x < W_LEVEL; x++ ) {
+				if( LEVEL_CHANGE_TILES.contains( tileGrid[ x ][ 10 ].getTileReference(), false ) ){
+					width += 1;
+				} else if( width > 0 ) {
+					setLevelChangeSensor( ( x - width ), 10, width, gameWorld.getLevel( levelGridX, levelGridY + 1 ) );
+					width = 0;
+				} else {
+					width = 0;
+				}
+			}
+		}
+		
+		if( levelGridX < gameWorld.getWorldType().N_X - 2 ) {
+			width = 0;
+			for( int y = 0; y < H_LEVEL; y++ ) {
+				if( LEVEL_CHANGE_TILES.contains( tileGrid[ 15 ][ y ].getTileReference(), false ) ) {
+					width += 1;
+				} else if( width > 0 ){
+					setLevelChangeSensor( 15, ( y - width ), width, gameWorld.getLevel( levelGridX + 1, levelGridY ) );
+					width = 0;
+				} else {
+					width = 0;
+				}
+			}
+		}
+	}
+	
+	public void setLevelChangeSensor( int tileGridX, int tileGridY, int width, Level levelTarget ){
+		boolean isVertical = tileGridY == 10;
+		
+		LevelChangeSensor sensor = new LevelChangeSensor( gameWorld, tileGrid[ tileGridX ][ tileGridY ], width, this, levelTarget, isVertical );
+		
+		tileGrid[ tileGridX ][ tileGridY ].setSensor( sensor );
 	}
 	
 	@Override
@@ -121,7 +157,6 @@ public class Level implements Targetable, Drawable, Spawnable {
 			}
 		}
 	}
-	
 	/**
 	 * Gives the pixel x-coordinate at the center of the level tile
 	 *
@@ -153,25 +188,21 @@ public class Level implements Targetable, Drawable, Spawnable {
 	public static Vector2 toPixel( Level level, int tileGridX, int tileGridY ){
 		return new Vector2( toPixelX( level, tileGridX ), toPixelY( level, tileGridY ) );
 	}
-	
 	public static int toLevelGridX( float pixelX ){
 		return (int) ( pixelX / W_LEVEL_TILE );
 	}
 	public static int toLevelGridY( float pixelY ){
 		return (int) ( pixelY / H_LEVEL_TILE );
 	}
-	
 	@Override
 	public Vector2 getCamTarget() {
 		return getPosition();
 	}
-	
 	@Override
 	public Vector2 getSpawnPoint() {
 		if( spawnPoint == null ) return getPosition();
 		return spawnPoint.cpy();
 	}
-	
 	public void setSpawnPoint( int tileGridX, int tileGridY ){
 		if( spawnPoint == null ) spawnPoint = new Vector2();
 		spawnPoint.set( tileGrid[ tileGridX ][ tileGridY ].pixelPosition );
@@ -180,27 +211,21 @@ public class Level implements Targetable, Drawable, Spawnable {
 	public void setSpawnPoint( Vector2 tileGrid ){
 		setSpawnPoint( (int) tileGrid.x, (int) tileGrid.y );
 	}
-	
 	public Vector2 getPosition(){
 		return levelCenter.getPosition().scl( PPM );
 	}
-	
 	public boolean isLoaded() {
 		return isLoaded;
 	}
-	
 	public int gridDist( Level level ) {
 		return Math.max( Math.abs( levelGridX - level.getLevelGridX() ), Math.abs( levelGridY - level.levelGridY ) );
 	}
-	
 	public int getLevelGridX(){
 		return levelGridX;
 	}
-	
 	public int getLevelGridY(){
 		return levelGridY;
 	}
-	
 	public Tile getGrid( int tileGridX, int tileGridY ) {
 		return tileGrid[ tileGridX ][ tileGridY ];
 	}

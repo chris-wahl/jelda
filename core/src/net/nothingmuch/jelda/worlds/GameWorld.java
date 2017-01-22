@@ -192,4 +192,8 @@ public abstract class GameWorld {
 	public WorldScreen getScreen() {
 		return gameScreen;
 	}
+	
+	public Level getLevel( int levelGridX, int levelGridY ) {
+		return levelGrid[ levelGridX ][ levelGridY ];
+	}
 }

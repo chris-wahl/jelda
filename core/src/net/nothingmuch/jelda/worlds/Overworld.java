@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
-import net.nothingmuch.jelda.entities.world_members.LevelChangeSensor;
 import net.nothingmuch.jelda.managers.GameWorldManager;
 import net.nothingmuch.jelda.screens.WorldScreen;
 
@@ -27,13 +26,21 @@ public class Overworld extends GameWorld {
 	public Overworld( WorldScreen worldScreen, GameWorldManager worldManager, Link link, boolean startInWorld ) {
 		this( worldScreen, worldManager, link );
 		
+		sandbox();
 		if( startInWorld ) link.setInGameWorld( this, levelGrid[ 7 ][ 0 ] );
 		linkInWorld = startInWorld;
-		sandbox();
 	}
 	
 	private void sandbox(){
-		new LevelChangeSensor( this, levelGrid[ 7 ][ 0 ].getGrid( 15, 5 ), levelGrid[ 7 ][ 0 ], levelGrid[ 8 ][ 0 ], true );
+		//new LevelChangeSensor( this, levelGrid[ 7 ][ 0 ].getGrid( 8, 10 ), levelGrid[ 7 ][ 0 ], levelGrid[ 8 ][ 0 ], true, true );
+		for( Level[] levelRow : levelGrid ){
+			for( Level level : levelRow ){
+				if( level.getLevelGridX() == 7 && level.getLevelGridY() == 0 ){
+					System.out.print( "Test" );
+				}
+				level.setLevelSensors();
+			}
+		}
 	}
 	
 	@Override
@@ -78,7 +85,6 @@ public class Overworld extends GameWorld {
 	@Override
 	public void setCurrentLevel( Level level ) {
 		super.setCurrentLevel( level );
-		//loadLevels();
 	}
 	
 	@Override

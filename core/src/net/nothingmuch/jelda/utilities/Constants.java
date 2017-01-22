@@ -1,5 +1,7 @@
 package net.nothingmuch.jelda.utilities;
 
+import com.badlogic.gdx.utils.Array;
+
 /**
  * Static constant variables
  */
@@ -54,6 +56,9 @@ public class Constants {
 	/* OVERWORLD TILE REFERENCES */
 	public static final int DOOR_REF = Integer.parseInt( "12", 16 );
 	public static final int BLANK_TILE_REF = Integer.parseInt( "18", 16 );
+	public static final Array<Integer> LEVEL_CHANGE_TILES = new Array<Integer>( false,
+			new Integer[] { Integer.parseInt( "02", 16 ), Integer.parseInt( "0e", 16 ), Integer.parseInt( "14", 16 ), Integer.parseInt( "1a", 16 ), Integer.parseInt( "20", 16 ) },
+			0, 5 );
 	
 	public enum WorldType {
 		OVERWORLD( 16, 8 ),

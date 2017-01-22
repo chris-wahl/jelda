@@ -7,14 +7,14 @@ Basic Overworld/World transition complete.
 ~~ 3.  Test changes ~~
 ~~ 4.  Set level loaded checking to be performed when the LevelChangeSensor untriggers (and sets on current level),
    rather than constantly ~~
+~~ 4a.  Send vertical/horizontal flag into constructor; store for repeated cases of MakeBody ~~
 
-   4a.  Send vertical/horizontal flag into constructor; store for repeated cases of MakeBody
-
-   5a. Setup Level to set a LevelChangeSensor on desired tiles - will be loaded/unloaded with the rest of the tiles/sensors
-   5b. Detect positions appropriate to place level senors in overWorld (sand tile, grey tile)
-    - Run along top edge of Level and Right edge of level
-    - Sensors require two instances of Level, thus must set AFTER levels are created - InitGrid() already called
+~~ 5a. Setup Level to set a LevelChangeSensor on desired tiles - will be loaded/unloaded with the rest of the tiles/sensors ~~
+~~ 5b. Detect positions appropriate to place level senors in overWorld (sand tile, grey tile) ~~
+~~  - Run along top edge of Level and Right edge of level ~~
+~~  - Sensors require two instances of Level, thus must set AFTER levels are created - InitGrid() already called ~~
 
 // TODO: Post work
-
-Trace setLevel/currentLevel/Original level load process.  MAke sure it makes sense.
+- Determine camera error in InsideWorld load
+- Check multi-door sensors
+- Trace setLevel/currentLevel/Original level load process.  Make sure it makes sense.
