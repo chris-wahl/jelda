@@ -1,6 +1,7 @@
 package net.nothingmuch.jelda.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -44,6 +45,9 @@ public class GameWorldManager {
 	}
 	
 	public void update( float delta ){
+		if( Gdx.input.isKeyJustPressed( Input.Keys.L ) ){
+			gameScreen.setCameraTarget( currentWorld.getLink() );
+		}
 		currentWorld.update( delta );
 	}
 	

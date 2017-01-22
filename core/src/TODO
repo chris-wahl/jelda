@@ -1,9 +1,20 @@
 Basic Overworld/World transition complete.
 
 // TODO: Draw LevelChange Sensors
-1.  Build LevelChangeSensor Class
-2.  Set camTargets to RoomCenters
-    - Add debug test L key to set link as camtarget
-3.  Test changes
-4.  Set level loaded checking to be performed when the LevelChangeSensor untriggers (and sets on current level),
-    rather than constantly
+~~ 1.  Build LevelChangeSensor Class ~~
+~~ 2.  Set camTargets to RoomCenters ~~
+~~  - Add debug test L key to set link as camtarget ~~
+~~ 3.  Test changes ~~
+~~ 4.  Set level loaded checking to be performed when the LevelChangeSensor untriggers (and sets on current level),
+   rather than constantly ~~
+
+   4a.  Send vertical/horizontal flag into constructor; store for repeated cases of MakeBody
+
+   5a. Setup Level to set a LevelChangeSensor on desired tiles - will be loaded/unloaded with the rest of the tiles/sensors
+   5b. Detect positions appropriate to place level senors in overWorld (sand tile, grey tile)
+    - Run along top edge of Level and Right edge of level
+    - Sensors require two instances of Level, thus must set AFTER levels are created - InitGrid() already called
+
+// TODO: Post work
+
+Trace setLevel/currentLevel/Original level load process.  MAke sure it makes sense.

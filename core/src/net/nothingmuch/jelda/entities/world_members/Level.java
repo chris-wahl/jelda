@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.managers.MapManager;
 import net.nothingmuch.jelda.utilities.b2d.BodyBuilder;
@@ -190,12 +189,8 @@ public class Level implements Targetable, Drawable, Spawnable {
 		return isLoaded;
 	}
 	
-	public int gridDist( Link link ) {
-		int x = toLevelGridX( link.getPosition().x );
-		int y = toLevelGridY( link.getPosition().y );
-		return Math.max( Math.abs( levelGridX - toLevelGridX( link.getPosition().x ) ),
-					     Math.abs( levelGridY - toLevelGridY( link.getPosition().y ) )) ;
-		
+	public int gridDist( Level level ) {
+		return Math.max( Math.abs( levelGridX - level.getLevelGridX() ), Math.abs( levelGridY - level.levelGridY ) );
 	}
 	
 	public int getLevelGridX(){
@@ -204,5 +199,9 @@ public class Level implements Targetable, Drawable, Spawnable {
 	
 	public int getLevelGridY(){
 		return levelGridY;
+	}
+	
+	public Tile getGrid( int tileGridX, int tileGridY ) {
+		return tileGrid[ tileGridX ][ tileGridY ];
 	}
 }

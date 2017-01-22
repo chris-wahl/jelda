@@ -3,6 +3,7 @@ package net.nothingmuch.jelda.screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Matrix4;
 import net.nothingmuch.jelda.managers.CameraManager;
+import net.nothingmuch.jelda.utilities.interfaces.Targetable;
 
 /**
  * Created by christopher on 1/15/17.
@@ -35,6 +36,10 @@ public abstract class GameScreen implements Screen {
 	
 	@Override
 	public abstract void hide();
+	
+	public void setCameraTarget( Targetable cameraTarget ){
+		cameraManager.setTargetA( cameraTarget );
+	}
 	
 	public CameraManager getCameraManager() {
 		return cameraManager;

@@ -12,8 +12,6 @@ import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
 import net.nothingmuch.jelda.managers.GameWorldManager;
 import net.nothingmuch.jelda.managers.MapManager;
-import net.nothingmuch.jelda.managers.WorldContactListener;
-import net.nothingmuch.jelda.screens.GameScreen;
 import net.nothingmuch.jelda.screens.WorldScreen;
 
 import java.util.Iterator;
@@ -30,16 +28,23 @@ public abstract class GameWorld {
 	protected final WorldType worldType;
 	protected final MapManager mapManager;
 	public boolean linkInWorld;
-	protected World world;
-	protected Array<Body> toBeDestoryed = new Array<Body>();
-	protected RayHandler rayHandler;
-	protected Level[][] levelGrid;
-	protected Array<Level> loadedLevels = new Array<Level>();
-	protected GameScreen gameScreen;
 	protected GameWorldManager worldManager;
+	protected World world;
+	
+	protected Array<Body> toBeDestoryed = new Array<Body>();
+	
+	protected WorldScreen gameScreen;
+	protected RayHandler rayHandler;
+	
+	protected Level[][] levelGrid;
+	protected Level currentLevel;
+	protected Array<Level> loadedLevels = new Array<Level>();
+	
 	protected float PIXEL_DRAW_LIMIT = W_LEVEL_TILE;
+	
 	protected LinkBody linkBody;
 	protected Link link;
+	
 	protected DoorSensorTarget exitTarget;
 	protected Vector2 exitPosition = new Vector2();
 	protected boolean worldChange = false;
@@ -111,8 +116,7 @@ public abstract class GameWorld {
 	
 	public void enterWorld( int levelGridX, int levelGridY ) {
 		this.link.setInGameWorld( this );
-		System.out.println( levelGrid.length );
-		setLevel( levelGridX, levelGridY );
+		setCurentLevel( levelGridX, levelGridY );
 		linkInWorld = true;
 	}
 	
@@ -133,18 +137,22 @@ public abstract class GameWorld {
 			reference = levelIterator.next();
 			if( ! reference.isLoaded() ) {
 				levelIterator.remove();
-			} else if( reference.gridDist( link ) > 1 ) {
+			} else if( reference.gridDist( currentLevel ) > 1 ) {
 				reference.unload();
 				levelIterator.remove();
-			} else {
-				//reference.load_in_limit( link.getPosition(), PIXEL_DRAW_LIMIT );
-			}
+			} /*else {
+				reference.load_in_limit( link.getPosition(), PIXEL_DRAW_LIMIT );
+			} */
 		}
 	}
 	
-	protected void setLevel( int levelGridX, int levelGridY ) {
-		link.setPosition( levelGrid[ levelGridX ][ levelGridY ] );
-		addLoadedLevel( levelGrid[ levelGridX ][ levelGridY ] );
+	public void setCurrentLevel( Level level ){
+		currentLevel = level;
+		currentLevel.load();
+	}
+	
+	public void setCurentLevel( int levelGridX, int levelGridY ) {
+		setCurrentLevel( levelGrid[ levelGridX ][ levelGridY ] );
 	}
 	
 	public Link getLink() {
@@ -179,5 +187,9 @@ public abstract class GameWorld {
 	
 	public MapManager getMapManager() {
 		return mapManager;
+	}
+	
+	public WorldScreen getScreen() {
+		return gameScreen;
 	}
 }

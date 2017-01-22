@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import net.nothingmuch.jelda.entities.world_members.Level;
 import net.nothingmuch.jelda.managers.AssetManager;
 import net.nothingmuch.jelda.utilities.interfaces.Spawnable;
 import net.nothingmuch.jelda.worlds.GameWorld;
@@ -55,6 +56,11 @@ public class Link extends Character {
 	public void setInGameWorld( GameWorld gameWorld, Spawnable spawnPoint ){
 		setInGameWorld( gameWorld );
 		setPosition( spawnPoint );
+		
+		int levelGridX = Level.toLevelGridX( spawnPoint.getSpawnPoint().x );
+		int levelGridY = Level.toLevelGridY( spawnPoint.getSpawnPoint().y );
+		
+		gameWorld.setCurentLevel( levelGridX, levelGridY );
 	}
 	public void setInGameWorld( GameWorld gameWorld, Vector2 position ){
 		setInGameWorld( gameWorld );

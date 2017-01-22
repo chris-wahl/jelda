@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.Level;
+import net.nothingmuch.jelda.entities.world_members.LevelChangeSensor;
 import net.nothingmuch.jelda.managers.GameWorldManager;
 import net.nothingmuch.jelda.screens.WorldScreen;
 
@@ -19,7 +20,7 @@ public class Overworld extends GameWorld {
 	public Overworld( WorldScreen worldScreen, GameWorldManager worldManager, Link link ) {
 		super( worldScreen, worldManager, WorldType.OVERWORLD, link );
 		
-		worldScreen.getCameraManager().setTargetA( this.link );
+		worldScreen.getCameraManager().setTargetA( levelGrid[ 7 ][ 0 ] );
 		worldScreen.getCameraManager().setCameraStyle( CameraStyle.LERP_TO_TARGET_ZOOM );
 	}
 	
@@ -28,6 +29,11 @@ public class Overworld extends GameWorld {
 		
 		if( startInWorld ) link.setInGameWorld( this, levelGrid[ 7 ][ 0 ] );
 		linkInWorld = startInWorld;
+		sandbox();
+	}
+	
+	private void sandbox(){
+		new LevelChangeSensor( this, levelGrid[ 7 ][ 0 ].getGrid( 15, 5 ), levelGrid[ 7 ][ 0 ], levelGrid[ 8 ][ 0 ], true );
 	}
 	
 	@Override
@@ -50,28 +56,29 @@ public class Overworld extends GameWorld {
 	}
 	
 	public void loadLevels() {
-		int linkLevelX = Level.toLevelGridX( link.getPosition().x );
-		int linkLevelY = Level.toLevelGridY( link.getPosition().y );
-		
-		for( int x = - 1; x < 2; x++ ) {
-			for( int y = - 1; y < 2; y++ ) {
-				if( x + linkLevelX < 0 || x + linkLevelX >= worldType.N_X || y + linkLevelY < 0 || y + linkLevelY >= worldType.N_Y ) {
-					continue;
-				} else if( ! levelGrid[ x + linkLevelX ][ y + linkLevelY ].isLoaded() ) {
-					levelGrid[ x + linkLevelX ][ y + linkLevelY ].load();
+		for( int x = currentLevel.getLevelGridX() - 1; x < currentLevel.getLevelGridX() + 2; x++ ){
+			for( int y = currentLevel.getLevelGridY() - 1; y < currentLevel.getLevelGridY() + 2; y++ ){
+				if( x > - 1 && x < worldType.N_X && y > - 1 && y < worldType.N_Y && ! levelGrid[ x ][ y ].isLoaded() ) {
+					levelGrid[ x ][ y ].load();
 				}
 			}
 		}
 	}
 	
 	public void enterWorld( int levelGridX, int levelGridY, boolean useLastPos ) {
-		enterWorld( levelGridX, levelGridY );
+		super.enterWorld( levelGridX, levelGridY );
 		if( useLastPos ) link.setPosition( exitPosition );
 	}
 	
 	@Override
 	public void doDraw( SpriteBatch spriteBatch, float runTime ) {
 		link.draw( spriteBatch, runTime );
+	}
+	
+	@Override
+	public void setCurrentLevel( Level level ) {
+		super.setCurrentLevel( level );
+		//loadLevels();
 	}
 	
 	@Override

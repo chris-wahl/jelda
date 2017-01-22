@@ -20,12 +20,6 @@ public abstract class Sensor implements Triggerable {
 		this.sensorBody = null;
 	}
 	
-	public Sensor( GameWorld gameWorld, boolean isActive ){
-		this( gameWorld );
-		this.isActive = isActive;
-		this.sensorMade = isActive;
-	}
-	
 	public boolean isActive(){
 		return isActive;
 	}

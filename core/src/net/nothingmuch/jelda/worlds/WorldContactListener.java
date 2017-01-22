@@ -1,11 +1,10 @@
-package net.nothingmuch.jelda.managers;
+package net.nothingmuch.jelda.worlds;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import net.nothingmuch.jelda.entities.characters.Link;
-import net.nothingmuch.jelda.entities.world_members.DoorSensor;
 import net.nothingmuch.jelda.entities.world_members.Level;
-import net.nothingmuch.jelda.worlds.GameWorld;
+import net.nothingmuch.jelda.utilities.interfaces.Triggerable;
 
 /**
  * Contact listener for a GameWorld
@@ -27,8 +26,8 @@ public class WorldContactListener implements ContactListener {
 			
 			if( otherObject instanceof Level ){
 				Gdx.app.log( "Level Contact", ( (Level) otherObject ).getLevelGridX() + ", " + ( (Level) otherObject ).getLevelGridY() );
-			} else if ( otherObject instanceof DoorSensor ){
-				( ( DoorSensor ) otherObject ).trigger();
+			} else if ( otherObject instanceof Triggerable ){
+				( ( Triggerable ) otherObject ).trigger();
 			}
 		}
 	}
@@ -42,8 +41,8 @@ public class WorldContactListener implements ContactListener {
 			
 			if( otherObject instanceof Level ){
 				Gdx.app.log( "Level Contact", ( (Level) otherObject ).getLevelGridX() + ", " + ( (Level) otherObject ).getLevelGridY() );
-			} else if ( otherObject instanceof DoorSensor ){
-				( ( DoorSensor ) otherObject ).untrigger();
+			} else if ( otherObject instanceof Triggerable ){
+				( ( Triggerable ) otherObject ).untrigger();
 			}
 		}
 	}

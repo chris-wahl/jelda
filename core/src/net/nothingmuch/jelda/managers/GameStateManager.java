@@ -49,7 +49,6 @@ public class GameStateManager {
 		}
 		cameraManager.update( delta );
 		states.peek().update( delta );
-		
 	}
 	
 	public void render( float delta ){
