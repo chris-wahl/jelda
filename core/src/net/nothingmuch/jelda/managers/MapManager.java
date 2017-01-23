@@ -63,7 +63,7 @@ public class MapManager {
 		String MAP_TEXT = Gdx.files.internal( MAP_FILE ).readString();
 		MAP_GRID = new int[ 256 ][ 88 ];
 		
-		String[] maprows = MAP_TEXT.split( "\n" );
+		String[] maprows = MAP_TEXT.split( System.lineSeparator() );
 		int len = maprows.length;
 		for( int y = 0; y < maprows.length; y++ ){
 			String[] maptiles = maprows[ len - 1 - y ].split( " " );
