@@ -15,6 +15,5 @@ Basic Overworld/World transition complete.
 ~~  - Sensors require two instances of Level, thus must set AFTER levels are created - InitGrid() already called ~~
 
 // TODO: Post work
-- Determine camera error in InsideWorld load
-- Check multi-door sensors
-- Trace setLevel/currentLevel/Original level load process.  Make sure it makes sense.
+~~~ - Determine camera error in InsideWorld load ~~~
+~~~ - Check multi-door sensors ~~~

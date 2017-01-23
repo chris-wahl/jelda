@@ -36,6 +36,7 @@ public class GameWorldManager {
 		Gdx.input.setInputProcessor( new WorldInputManager( this ) );
 		
 		debugRenderer = new Box2DDebugRenderer();
+		gameScreen.getCameraManager().setDebugRenderer( debugRenderer );
 		
 		link = new Link();
 		

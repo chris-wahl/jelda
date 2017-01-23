@@ -18,26 +18,22 @@ public class Overworld extends GameWorld {
 	
 	public Overworld( WorldScreen worldScreen, GameWorldManager worldManager, Link link ) {
 		super( worldScreen, worldManager, WorldType.OVERWORLD, link );
-		
-		worldScreen.getCameraManager().setTargetA( levelGrid[ 7 ][ 0 ] );
+		currentLevel = levelGrid[ 7 ][ 0 ];
+		worldScreen.getCameraManager().setTargetA( currentLevel );
 		worldScreen.getCameraManager().setCameraStyle( CameraStyle.LERP_TO_TARGET_ZOOM );
 	}
 	
 	public Overworld( WorldScreen worldScreen, GameWorldManager worldManager, Link link, boolean startInWorld ) {
 		this( worldScreen, worldManager, link );
 		
-		sandbox();
-		if( startInWorld ) link.setInGameWorld( this, levelGrid[ 7 ][ 0 ] );
+		setLevelChangeSensors();
+		if( startInWorld ) link.setInGameWorld( this, currentLevel );
 		linkInWorld = startInWorld;
 	}
 	
-	private void sandbox(){
-		//new LevelChangeSensor( this, levelGrid[ 7 ][ 0 ].getGrid( 8, 10 ), levelGrid[ 7 ][ 0 ], levelGrid[ 8 ][ 0 ], true, true );
+	private void setLevelChangeSensors(){
 		for( Level[] levelRow : levelGrid ){
 			for( Level level : levelRow ){
-				if( level.getLevelGridX() == 7 && level.getLevelGridY() == 0 ){
-					System.out.print( "Test" );
-				}
 				level.setLevelSensors();
 			}
 		}

@@ -108,7 +108,7 @@ public class Level implements Targetable, Drawable, Spawnable {
 	
 	public void setLevelSensors(){
 		int width = 0;
-		if( levelGridY < gameWorld.getWorldType().N_Y - 2 ) {
+		if( levelGridY < gameWorld.getWorldType().N_Y - 1 ) {
 			for( int x = 0; x < W_LEVEL; x++ ) {
 				if( LEVEL_CHANGE_TILES.contains( tileGrid[ x ][ 10 ].getTileReference(), false ) ){
 					width += 1;
@@ -121,7 +121,7 @@ public class Level implements Targetable, Drawable, Spawnable {
 			}
 		}
 		
-		if( levelGridX < gameWorld.getWorldType().N_X - 2 ) {
+		if( levelGridX < gameWorld.getWorldType().N_X - 1 ) {
 			width = 0;
 			for( int y = 0; y < H_LEVEL; y++ ) {
 				if( LEVEL_CHANGE_TILES.contains( tileGrid[ 15 ][ y ].getTileReference(), false ) ) {

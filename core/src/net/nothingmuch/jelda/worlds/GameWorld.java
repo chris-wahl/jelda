@@ -149,6 +149,7 @@ public abstract class GameWorld {
 	public void setCurrentLevel( Level level ){
 		currentLevel = level;
 		currentLevel.load();
+		gameScreen.setCameraTarget( currentLevel);
 	}
 	
 	public void setCurentLevel( int levelGridX, int levelGridY ) {

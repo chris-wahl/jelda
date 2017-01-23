@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import net.nothingmuch.jelda.entities.characters.Link;
 import net.nothingmuch.jelda.entities.world_members.DoorSensor.DoorSensorTarget;
 import net.nothingmuch.jelda.entities.world_members.InsideLevel;
-import net.nothingmuch.jelda.entities.world_members.Level;
 import net.nothingmuch.jelda.managers.GameWorldManager;
 import net.nothingmuch.jelda.screens.WorldScreen;
 import net.nothingmuch.jelda.utilities.Constants;
@@ -14,8 +13,6 @@ import net.nothingmuch.jelda.utilities.Constants;
  *
  */
 public class InsideWorld extends GameWorld {
-	
-	private Level activeLevel;
 	
 	public InsideWorld( WorldScreen worldScreen, Link link, GameWorldManager worldManager ) {
 		super( worldScreen, worldManager, Constants.WorldType.INSIDE, link );
@@ -36,9 +33,11 @@ public class InsideWorld extends GameWorld {
 	
 	@Override
 	public void enterWorld( int levelGridX, int levelGridY ) {
+		//currentLevel = levelGrid[ levelGridX ][ levelGridY ];
+		//currentLevel.load();
+		//gameScreen.setCameraTarget( currentLevel );
 		super.enterWorld( levelGridX, levelGridY );
-		activeLevel = levelGrid[ levelGridX ][ levelGridY ];
-		activeLevel.load();
+		link.setPosition( currentLevel );
 	}
 	
 	public void enterWorld( int levelGridX, int levelGridY, boolean useSpawnPoint ) {
@@ -66,7 +65,7 @@ public class InsideWorld extends GameWorld {
 	
 	@Override
 	public void exitWorld() {
-		activeLevel.unload();
+		currentLevel.unload();
 		worldChange = false;
 		worldManager.changeWorld( exitTarget );
 	}

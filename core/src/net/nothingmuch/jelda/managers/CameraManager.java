@@ -24,6 +24,8 @@ public class CameraManager {
 	private float zoom;
 	private Targetable targetA, targetB;
 	
+	private Box2DDebugRenderer debugRenderer;
+	
 	public CameraManager(){
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho( false, WORLD_WIDTH, WINDOW_HEIGHT );
@@ -85,7 +87,7 @@ public class CameraManager {
 		viewport.update( width, height );
 	}
 	
-	public void debugRender( Box2DDebugRenderer debugRenderer, World world ){
+	public void debugRender( World world ){
 		debugRenderer.render( world, camera.combined.cpy().scl( PPM ) );
 	}
 	
@@ -100,5 +102,9 @@ public class CameraManager {
 	public void ClearScreen( float red, float green, float blue, float alpha){
 		Gdx.gl.glClearColor(red, green, blue, alpha);
 		Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT);
+	}
+	
+	public void setDebugRenderer( Box2DDebugRenderer debugRenderer ) {
+		this.debugRenderer = debugRenderer;
 	}
 }
